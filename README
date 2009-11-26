@@ -22,33 +22,34 @@ This will do the following:
 After NBL has done its job you can verify a few things through the global nbl object. I'll outline the most 
 notable below:
 
-Every script will be placed in a nbl.q object, referred to by the name given in the options. So nbl.q.jquery
-will return true in the above example, as will nbl.q.urchin. The status of the plugins can be retrieved by 
-nbl.q.p0 and nbl.q.p1. If a script has loaded successfully, it will return true, otherwise you'll get the 
-script element of the script you queried.
+Every script will be placed in the nbl.q object, referred to by the name given in the options. By default 
+it will load the jQuery library, so nbl.q.jquery will return true, as will nbl.q.urchin. The status of the 
+plugins can be retrieved by nbl.q.p0 and nbl.q.p1. If a script has loaded successfully, it will return true, 
+otherwise you'll get the script element of the script you queried.
 
 You can verify whether jQuery used the document.ready() method to call the my_ready_function() afterwards as 
-nbl.j will be true. If jQuery wasn't ready before the page was ready, NBL will have fired my_ready_function() 
+nbl.j will be true. If the page rendered before jQuery was ready, NBL will have fired my_ready_function() 
 instead and nbl.j will be false.
 
-When a script fails to load, NBL will fire the my_ready_function() after a default timeout of 1200ms. Afterwards 
-nbl.e will be set to true, signalling an error. You can change the default timeout by specifying timeout: 2400 
-in the options.
+When a script fails to load, NBL will fire the my_ready_function() after a default timeout of 1200ms.
+Afterwards nbl.e will be set to true, signalling the error. You can change the default timeout by specifying 
+timeout: 2400 in the options.
 
 Speaking of options, here's a short overview of the available options (in no particular order):
 
 {
-  jquery: false||'url' -- set this to false and jQuery will not load, or supply an alternate url
-  plugins: ['url1', 'url2']||'url' -- either an array or a single url; plugins will always load after jQuery
-  ready: function_name||function(){} -- this will be called through jQuery or after all scripts have loaded
-  timeout: 1200 -- pick a number, any number of milliseconds; I tried to pick a sensible default of 1200ms
+  jquery: false or 'url' -- set this to false and jQuery will not load, or supply an alternate url
+  plugins: ['url1', 'url2'] or 'url' -- either an array or a single url; plugins will always load after jQuery
+  ready: function_name or function(){} -- this will be called through jQuery or after all scripts have loaded
+  timeout: 1200 -- pick a number, any number (of milliseconds); I tried to pick a sensible default of 1200ms
 }
 
 I realise that NBL is very focussed on jQuery, but on the other hand, if you don't mind missing jQuery's 
-document.ready() function, you can just as easily enter a Moo Tools or Prototype url for the jquery: option. 
-You can even enter some Moo Tools/Prototype plugins in the plugins: array, and they will load as soon as the 
-script now replacing jQuery has loaded. After all scripts are done, NBL will fire the ready: function and you 
-can do your favourite library-specific code in there. That should work out just as well.
+document.ready() function, you can just as easily replace it with MooTools or Prototype script. Just supply
+the required url to the jquery: option. You can even enter some MooTools/Prototype plugins in the plugins: 
+array, and they will load as soon as the script now replacing jQuery has loaded. After all scripts are done, 
+NBL will fire the ready: function and you can do your favourite library-specific code in there. That should 
+work out just as well.
 
 I hope you find this useful.
 
