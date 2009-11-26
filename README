@@ -33,7 +33,7 @@ instead and nbl.j will be false.
 
 When a script fails to load, NBL will fire the my_ready_function() after a default timeout of 1200ms.
 Afterwards nbl.e will be set to true, signalling the error. You can change the default timeout by specifying 
-timeout: 2400 in the options.
+timeout: 2400 in the options (or any other number).
 
 Speaking of options, here's a short overview of the available options (in no particular order):
 
