@@ -1,2 +1,56 @@
 NBL - a tiny non-blocking JavaScript lazy loader
-------------------------------------------------
+
+Minified: 1301 bytes
+Cross-browser compatible: Tested in Safari, Firefox, IE6+, basically doing nothing too fancy.
+
+The short version:
+
+Include NBL in your pages and let it dynamically load all your JavaScript files by simply including the following tag:
+
+<script id="nbl" type="text/javascript" src="nbl.js" opt="{ urchin: 'http://www.google-analytics.com/urchin.js', plugins: [ 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], ready: my_ready_function }" />
+
+This will do the following:
+
+  1. It will load the latest version of jQuery from http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
+  2. It will load the Urchin script from Google Analytics
+  3. After jQuery has loaded it will queue the jQuery plugins defined in the plugins array above.
+     (This process starts as soon as jQuery has loaded, so it could be before step 2.)
+  4. When jQuery has loaded, it will attach the my_ready_function() to jQuery's document.ready() method.
+     Sometimes your pages are rendered before jQuery is fully initialised, in those cases NBL will wait until
+     all scripts have loaded and call the my_ready_function() itself.
+
+After NBL has done its job you can verify a few things through the global nbl object. I'll outline the most 
+notable below:
+
+Every script will be placed in a nbl.q object, referred to by the name given in the options. So nbl.q.jquery
+will return true in the above example, as will nbl.q.urchin. The status of the plugins can be retrieved by 
+nbl.q.p0 and nbl.q.p1. If a script has loaded successfully, it will return true, otherwise you'll get the 
+script element of the script you queried.
+
+You can verify whether jQuery used the document.ready() method to call the my_ready_function() afterwards as 
+nbl.j will be true. If jQuery wasn't ready before the page was ready, NBL will have fired my_ready_function() 
+instead and nbl.j will be false.
+
+When a script fails to load, NBL will fire the my_ready_function() after a default timeout of 1200ms. Afterwards 
+nbl.e will be set to true, signalling an error. You can change the default timeout by specifying timeout: 2400 
+in the options.
+
+Speaking of options, here's a short overview of the available options (in no particular order):
+
+{
+  jquery: false||'url' -- set this to false and jQuery will not load, or supply an alternate url
+  plugins: ['url1', 'url2']||'url' -- either an array or a single url; plugins will always load after jQuery
+  ready: function_name||function(){} -- this will be called through jQuery or after all scripts have loaded
+  timeout: 1200 -- pick a number, any number of milliseconds; I tried to pick a sensible default of 1200ms
+}
+
+I realise that NBL is very focussed on jQuery, but on the other hand, if you don't mind missing jQuery's 
+document.ready() function, you can just as easily enter a Moo Tools or Prototype url for the jquery: option. 
+You can even enter some Moo Tools/Prototype plugins in the plugins: array, and they will load as soon as the 
+script now replacing jQuery has loaded. After all scripts are done, NBL will fire the ready: function and you 
+can do your favourite library-specific code in there. That should work out just as well.
+
+I hope you find this useful.
+
+Regards,
+Berklee
