@@ -53,5 +53,7 @@ as well.
 
 I hope you find this useful.
 
-Regards,
 Berklee
+
+PS. You don't need to specify the opt attribute in the script tag, you can call nbl.run( { jquery: 'url' } ) 
+manually. And of course you can load scripts manually with nbl.load( 'name', 'url' ) at any moment as well.
