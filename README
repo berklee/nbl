@@ -45,11 +45,11 @@ Speaking of options, here's a short overview of the available options (in no par
 }
 
 I realise that NBL is very focussed on jQuery, but on the other hand, if you don't mind missing jQuery's 
-document.ready() function, you can just as easily replace it with MooTools or Prototype script. Just supply
-the required url to the jquery: option. You can even enter some MooTools/Prototype plugins in the plugins: 
-array, and they will load as soon as the script now replacing jQuery has loaded. After all scripts are done, 
-NBL will fire the ready: function and you can do your favourite library's specific code in there. That should 
-work out just as well.
+document.ready() function, you can just as easily replace it with MooTools or Prototype. Just supply the 
+required url to the jquery: option. You can even enter some MooTools/Prototype plugins in the plugins: array, 
+and they will load as soon as the script now replacing jQuery has loaded. After all scripts are done, NBL will 
+fire the ready: function and you can do your favourite library's specific code in there. That should work just 
+as well.
 
 I hope you find this useful.
 
