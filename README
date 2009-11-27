@@ -1,6 +1,6 @@
 NBL - a tiny non-blocking JavaScript lazy loader
 
-Minified: 1353 bytes
+Minified: 1290 bytes
 Cross-browser compatible: Tested in Safari, Firefox, IE6+, basically doing nothing too fancy.
 
 Include NBL in your pages and let it dynamically load all your JavaScript files by simply including the following tag:
@@ -17,8 +17,8 @@ This will do the following:
      Sometimes your pages are rendered before jQuery is fully initialised, in those cases NBL will wait until
      all scripts have loaded and call the my_ready_function() itself.
 
-After NBL has done its job you can verify a few things through the global nbl object. I'll outline the most 
-notable below:
+After NBL has done its job you can verify a few things through the global nbl object (you can change the name 
+of this object by specifying name: in the options). I'll outline the most notable below:
 
 Every script will be placed in the nbl.q object, referred to by the name given in the options. By default 
 it will load the jQuery library, so nbl.q.jquery will return true, as will nbl.q.urchin. The status of the 
@@ -27,23 +27,24 @@ otherwise you'll get the script element of the script you queried.
 
 You can verify whether jQuery used the document.ready() method to call the my_ready_function() afterwards as 
 nbl.j will be true. If the page rendered before jQuery was ready, NBL will have fired my_ready_function() 
-instead and nbl.j will be false.
+instead and nbl.j will be undefined.
 
 When a script fails to load, NBL will fire the my_ready_function() after a default timeout of 1200ms.
 Afterwards nbl.e will be set to true, signalling the error. You can change the default timeout by specifying 
-timeout: 2400 in the options (or any other number).
+timeout: 2400 (or any other number) in the options.
 
 Speaking of options, here's a short overview of the available options (in no particular order):
 
 {
+  name: 'nbl', -- this string determines the name of the NBL object
   jquery: false or 'url' -- set this to false and jQuery will not load, or supply an alternate url
   plugins: ['url1', 'url2'] or 'url' -- either an array or a single url; plugins will always load after jQuery
   ready: function_name or function(){} -- this will be called through jQuery or after all scripts have loaded
   timeout: 1200 -- pick a number, any number (of milliseconds); I tried to pick a sensible default of 1200ms
 }
 
-All options are case-sensitive, if you include a file and name it 'urCHin', the corresponding nbl.q object will 
-be nbl.q.urCHin. I advise you to simply use lowercase for all options.
+All options are *case-sensitive*, if you include a file and name it 'urCHin', the corresponding nbl.q object 
+will be nbl.q.urCHin. I advise you to simply use lowercase for all options.
 
 You can find more examples in the included example.html.
 

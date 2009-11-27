@@ -11,13 +11,13 @@
       if ( nbl_count == 0 ) {
         // nbl_xmp1 was called for the first time
         $( '#result1' ).html( 'nbl_xmp1() was fired' ).addClass( 'pos' );
+        $( '#result1a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==undefined)?'neg':'pos' );
         $( '#result1b' ).html( 'nbl.q.jquery is ' + nbl.q.jquery ).addClass( (nbl.q.jquery==true)?'pos':'neg' );
-        $( '#result1a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==false)?'neg':'pos' );
         nbl_count++;
       } else {
         // nbl_xmp1 was called for the second time
         $( '#result2' ).html( 'nbl_xmp1() was fired again' ).addClass( 'pos' );
-        $( '#result2a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==false)?'neg':'pos' );
+        $( '#result2a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==undefined)?'neg':'pos' );
         $( '#result2b' ).html( 'nbl.q.urchin is ' + nbl.q.urchin ).addClass( (nbl.q.urchin==true)?'pos':'neg' );
         nbl_count++;
       }
@@ -40,13 +40,12 @@
       return false;
     }
     function nbl_xmp3() {
-      $( '#result3' ).html( 'nbl_xmp3() was fired after a 3500ms timeout' ).addClass( 'pos' );
-      $( '#result3a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==false)?'neg':'pos' );
+      $( '#result3' ).html( 'nbl_xmp3() was fired after ' + ( (new Date()).getTime() - mtime ) + 'ms' ).addClass( 'pos' );
+      $( '#result3a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==undefined)?'neg':'pos' );
       $( '#result3b' ).html( 'nbl.q.date is ' + nbl.q.date ).addClass( (nbl.q.date==true)?'pos':'neg' );
       $( '#result3c' ).html( 'nbl.q.p0 is ' + nbl.q.p0 ).addClass( (nbl.q.p0==true)?'pos':'neg' );
       $( '#result3d' ).html( 'nbl.q.p1 is ' + nbl.q.p1 ).addClass( (nbl.q.p1==true)?'pos':'neg' );
-      $( '#result3e' ).html( 'nbl.e is ' + nbl.e ).addClass( (nbl.e==false)?'pos':'neg' );
-      $( '#result3f' ).html( (new Date()).getTime() - mtime + 'ms' ).addClass( 'neg' );
+      $( '#result3e' ).html( 'nbl.e is ' + nbl.e ).addClass( (nbl.e==undefined)?'pos':'neg' );
       
       if ( nbl.q.p0 == nbl.q.date ) {
         $( '#datepickerlink' ).datePicker().dpSetPosition($.dpConst.POS_BOTTOM,0).dpSetOffset(0,92);
@@ -55,7 +54,7 @@
     }
     // -->
   </script>
-  <script id="nbl" type="text/javascript" src="nbl.min.js" opt="{ ready: nbl_xmp1 }"></script>
+  <script id="nbl" type="text/javascript" src="nbl.js" opt="{ ready: nbl_xmp1 }"></script>
   <style>
     body { font-family: Georgia, serif; line-height: 1.5; }
     #container { margin: 4% auto; padding: 4%; width: 72%; background: #def; }
@@ -128,7 +127,10 @@
       <p>
         NBL is now resident, and we can load a new script at any time. Simply call <code>nbl.load( 'name', 'url' )</code> and a new 
         script shall be loaded. After completion the <code>nbl_xmp1()</code> function we defined in the script tag from example 1 will 
-        be fired again. <a href="#" onclick="return clk_xmp2();">Click here</a> to add the Google Analytics Urchin.js script to this page.
+        be fired again (unless you skipped ahead to example 3, in which case nbl_xmp3() will fire instead).
+      </p>
+      <p class="center">
+        <a href="#" onclick="return clk_xmp2();">Click here</a> to add the Google Analytics Urchin.js script to this page.
       </p>
       <h3>Result: <em id="result2">click first&hellip;</em></h3>
       <ul>
@@ -162,7 +164,9 @@
       <p>
         This will load a script with date extensions and two jQuery plugins, one date-picker and a non-existing one.
         Trying to load the second plugin should cause an error, let's find out:
-        <a href="#" onclick="return clk_xmp3();">Click here.</a>
+      </p>
+      <p class="center">
+        <a href="#" onclick="return clk_xmp3();">Click here</a> to load the date picker scripts.
       </p>
       <h3>Result: <em id="result3">click first&hellip;</em></h3>
       <ul>
@@ -171,7 +175,6 @@
         <li>Plugin 1 (p0) loaded: <em id="result3c">click first&hellip;</em></li>
         <li>Plugin 2 (p1) loaded: <em id="result3d">click first&hellip;</em></li>
         <li>Errors: <em id="result3e">click first&hellip;</em></li>
-        <li>Elapsed time: <em id="result3f">click first&hellip;</em></li>
       </ul>
       <p>
         Alright, what happened here? First off, Plugin 1 and the Date script should load just fine. But Plugin 2 should 
@@ -188,7 +191,8 @@
         for every script you've tried to load.
       </p>
       <p>
-        In this case, I'll wait for Date and Plugin 1 to have loaded before showing you the following date-picker link: 
+        In this case, I'll wait for Date and Plugin 1 to have loaded before showing you the date-picker link. This might 
+        take a while, sometimes up to a minute! Anyway, the link will appear here: 
         <a id="datepickerlink" href="#" class="hidden"></a>
       </p>
       <hr />
