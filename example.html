@@ -6,7 +6,7 @@
   <title>NBL Example</title>
   <script type="text/javascript">
     // <!--
-    var nbl_count = 0;
+    var nbl_count = 0, mtime = 0;
     function nbl_xmp1() {
       if ( nbl_count == 0 ) {
         // nbl_xmp1 was called for the first time
@@ -27,6 +27,7 @@
       return false;
     }
     function clk_xmp3() {
+      mtime = (new Date()).getTime();
       nbl.run( {
         date: 'http://github.com/vitch/jquery-methods/raw/master/date.js',
         plugins: [ 
@@ -45,6 +46,7 @@
       $( '#result3c' ).html( 'nbl.q.p0 is ' + nbl.q.p0 ).addClass( (nbl.q.p0==true)?'pos':'neg' );
       $( '#result3d' ).html( 'nbl.q.p1 is ' + nbl.q.p1 ).addClass( (nbl.q.p1==true)?'pos':'neg' );
       $( '#result3e' ).html( 'nbl.e is ' + nbl.e ).addClass( (nbl.e==false)?'pos':'neg' );
+      $( '#result3f' ).html( (new Date()).getTime() - mtime + 'ms' ).addClass( 'neg' );
       
       if ( nbl.q.p0 == nbl.q.date ) {
         $( '#datepickerlink' ).datePicker().dpSetPosition($.dpConst.POS_BOTTOM,0).dpSetOffset(0,92);
@@ -169,6 +171,7 @@
         <li>Plugin 1 (p0) loaded: <em id="result3c">click first&hellip;</em></li>
         <li>Plugin 2 (p1) loaded: <em id="result3d">click first&hellip;</em></li>
         <li>Errors: <em id="result3e">click first&hellip;</em></li>
+        <li>Elapsed time: <em id="result3f">click first&hellip;</em></li>
       </ul>
       <p>
         Alright, what happened here? First off, Plugin 1 and the Date script should load just fine. But Plugin 2 should 

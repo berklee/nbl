@@ -14,6 +14,7 @@ var nbl = {
 	p: [], // the jQuery plugins array
 	q: {}, // the script-tags queue
 	s: 0, // the script-tags stack
+	a: 0, // the timout anchor
 	ready: function(){}, // by default does nothing
 	load: function( n, u ) { // loads a given url 'u' with the given name 'n' via dynamic script-tag
 		var s = nbl.q[n] = document.createElement("script");
@@ -37,14 +38,9 @@ var nbl = {
 		nbl.chk()
 	},
 	chk: function() { // check for a non-empty stack, meaning scripts have not loaded successfully
-		if ( nbl.o > 0 ) { // the timeout has not been reached yet
-			if ( nbl.s == 0 ) { // all scripts have loaded, so call nbl.ready()
-				nbl.ready()
-			}
-			else { // keep counting down until the timeout is reached
-				nbl.o -= 50;
-				setTimeout( nbl.chk, 50 ) // check back in 50ms
-			}
+		if ( nbl.o > ( (new Date()).getTime() - nbl.a )  ) { // the timeout value is still larger than the elapsed time
+			if ( nbl.s == 0 ) nbl.ready(); // all scripts have loaded, so call nbl.ready()
+			else setTimeout( nbl.chk, 50 ); // check back in 50ms
 		}
 		else { // timeout has been reached, set the error property and call nbl.ready()
 			nbl.e = true;
@@ -54,6 +50,7 @@ var nbl = {
 	run: function() {
 		// read in the options from the arguments, or from the 'opt' attribute of the 'nbl' script-tag, or an empty object by default
 		var o = arguments[0] || eval( "(" + document.getElementById( "nbl" ).getAttribute( "opt" ) + ")" ) || {};
+		nbl.a = (new Date()).getTime(); // anchor the timeout
 
 		if ( typeof( o.timeout ) == "number" ) { nbl.o=o.timeout; delete o.timeout }; // extract the timeout value if it is a number, then remove it
 		if ( typeof( o.ready ) == "function" ) { nbl.ready = o.ready; delete o.ready }; // extract the ready function if it is a function, then remove it
