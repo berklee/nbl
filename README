@@ -45,7 +45,7 @@ Speaking of options, here's a short overview of the available options (in no par
 All options are case-sensitive, if you include a file and name it 'urCHin', the corresponding nbl.q object will 
 be nbl.q.urCHin. I advise you to simply use lowercase for all options.
 
-You can find more examples in the included examples.html.
+You can find more examples in the included example.html.
 
 I realise that NBL is very focussed on jQuery, but on the other hand, if you don't mind missing jQuery's 
 document.ready() function, you can just as easily replace it with MooTools or Prototype. Just supply the 
