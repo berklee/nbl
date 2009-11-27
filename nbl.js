@@ -6,7 +6,7 @@
  * Date: 2009-11-26
  */
 (function() {
-	return m = {
+	return var m = {
 		d: "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js", // default jQuery url
 		p: [], // the jQuery plugins array
 		q: {}, // the script-tags queue
@@ -23,7 +23,7 @@
 		cmp: function( n ) { // triggered on a complete load of script 'n'
 			var i, m = this;
 			m.q[n].parentNode.removeChild( m.q[n] );
-			m.q[n]=true;
+			m.q[n] = true;
 			m.s--;
 			// check if the currently loaded script happens to be jQuery
 			if ( n == "jquery" ) {
@@ -35,47 +35,38 @@
 			m.chk() // run the check function to check up on the status of all scripts
 		},
 		chk: function() { // check for a non-empty stack, meaning scripts have not loaded successfully
-			if ( m.o > ( (new Date()).getTime() - m.a )  ) { // the timeout value is still larger than the elapsed time
-				if ( m.s == 0 ) m.ready(); // all scripts have loaded, so call nbl.ready()
-				else setTimeout( m.chk, 50 ); // check back in 50ms
+			if ( m.o < 0 || m.s == 0 ) {
+				clearInterval( m.i );
+				m.e = Boolean( m.s );
+				m.ready()
 			}
-			else { // timeout has been reached, set the error property and call nbl.ready()
-				m.e = true;
-				m.ready();
-			}
-			return;
+			m.o -= 50
 		},
 		run: function() {
-			// read in the options from the arguments, or from the 'opt' attribute of the 'nbl' script-tag, or an empty object by default
+			// read the options from the arguments, the 'opt' attribute of the 'nbl' script-tag or false
 			var k, c = document, o = arguments[0] || eval( "(" + c.getElementById( "nbl" ).getAttribute( "opt" ) + ")" ) || false, 
-			n = o.name||'nbl', // retrieve the NBL objects name from the options
-			m = window[n] = this; delete o.name; // assign the NBL object to window object, so we can refer to it later
+			m = window[o.name||'nbl'] = this; // assign the NBL with the given or default name to the window object, so we can refer to it later
+			m.c = c; m.h = ( c.getElementsByTagName("head")[0] || c.documentElement ); // define the document and document.head element
 
-			// define some defaults like document and the document.head element, record the start time for the timeout
-			m.c = c;
-			m.h = ( c.getElementsByTagName("head")[0] || c.documentElement );
-			m.a = (new Date()).getTime(); // anchor the timeout
-			
 			// only run when there are options
 			if ( o ) {
-				// extract the custom timeout value and ready function
-				m.o = ( o.timeout || 1200 ); delete o.timeout;
-				m.ready = ( o.ready || m.ready ); delete o.ready;
+				m.o = ( o.timeout || 1200 ); // timeout value
+				m.ready = ( o.ready || m.ready ); // ready function
+				m.i = setInterval( m.chk, 50 ); // start the interval timer
 
 				// if 'jquery: false' was given don't load jQuery, otherwise, if 'jquery: true' or 'jquery: ""' was given use the default url to load jQuery, else use the supplied url
-				if ( o.jquery !== false ) { m.load( "jquery", ( o.jquery === true ) ? m.d : o.jquery || m.d ) }; delete o.jquery;
+				if ( o.jquery !== false ) { m.load( "jquery", ( o.jquery === true ) ? m.d : o.jquery || m.d ) };
 
 				// finally, traverse the remaining options, filter out the plugins into a separate nbl.p array and load the other ones
 				for ( k in o ) {
 					if ( /plugin/.test(k) ) { // if this key simply contains the word 'plugin', consider it a jQuery plugin to be loaded after jQuery has
 						m.p = m.p.concat( ( typeof( o[k] ) == "string" ) ? [ o[k] ] : o[k] ) // if the plugin given is a string, convert it to an array and append it to the nbl.p array
 					}
-					else {
+					else if ( !(/name|ready|timeout/.test(k)) ) {
 						m.load( k ,o[k] ) // this is a normal script definition, so load it
 					}
 				}
 			}
-			return
 		}
 	}
 })().run();
