@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+  <title>NBL Example</title>
+  <script type="text/javascript">
+    // <!--
+    var nbl_count = 0;
+    function nbl_xmp1() {
+      if ( nbl_count == 0 ) {
+        // nbl_xmp1 was called for the first time
+        $( '#result1' ).html( 'nbl_xmp1() was fired' ).addClass( 'pos' );
+        $( '#result1b' ).html( 'nbl.q.jquery is ' + nbl.q.jquery ).addClass( (nbl.q.jquery==true)?'pos':'neg' );
+        $( '#result1a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==false)?'neg':'pos' );
+        nbl_count++;
+      } else {
+        // nbl_xmp1 was called for the second time
+        $( '#result2' ).html( 'nbl_xmp1() was fired again' ).addClass( 'pos' );
+        $( '#result2a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==false)?'neg':'pos' );
+        $( '#result2b' ).html( 'nbl.q.urchin is ' + nbl.q.urchin ).addClass( (nbl.q.urchin==true)?'pos':'neg' );
+        nbl_count++;
+      }
+    }
+    function clk_xmp2() {
+      nbl.load( 'urchin', 'http://www.google-analytics.com/urchin.js' );
+      return false;
+    }
+    function clk_xmp3() {
+      nbl.run( {
+        date: 'http://github.com/vitch/jquery-methods/raw/master/date.js',
+        plugins: [ 
+          'http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/scripts/jquery.datePicker.js', 
+          'Non-existent URL' 
+        ], 
+        ready: nbl_xmp3,
+        timeout: 3500
+      } );
+      return false;
+    }
+    function nbl_xmp3() {
+      $( '#result3' ).html( 'nbl_xmp3() was fired after a 3500ms timeout' ).addClass( 'pos' );
+      $( '#result3a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==false)?'neg':'pos' );
+      $( '#result3b' ).html( 'nbl.q.date is ' + nbl.q.date ).addClass( (nbl.q.date==true)?'pos':'neg' );
+      $( '#result3c' ).html( 'nbl.q.p0 is ' + nbl.q.p0 ).addClass( (nbl.q.p0==true)?'pos':'neg' );
+      $( '#result3d' ).html( 'nbl.q.p1 is ' + nbl.q.p1 ).addClass( (nbl.q.p1==true)?'pos':'neg' );
+      $( '#result3e' ).html( 'nbl.e is ' + nbl.e ).addClass( (nbl.e==false)?'pos':'neg' );
+      
+      if ( nbl.q.p0 == nbl.q.date ) {
+        $( '#datepickerlink' ).datePicker().dpSetPosition($.dpConst.POS_BOTTOM,0).dpSetOffset(0,92);
+        $( '#datepickerlink' ).removeClass( 'hidden' );
+      }
+    }
+    // -->
+  </script>
+  <script id="nbl" type="text/javascript" src="nbl.min.js" opt="{ ready: nbl_xmp1 }"></script>
+  <style>
+    body { font-family: Georgia, serif; line-height: 1.5; }
+    #container { margin: 4% auto; padding: 4%; width: 72%; background: #def; }
+    h1 { margin-bottom: 0; text-align: center; }
+    h1 em { font-size: 75%; font-weight: normal; color: inherit; }
+    h3 em { font-weight: normal; }
+    hr { height: 0; border: none; border-bottom: 1px solid #bcd; }
+    em { color: #bcd; }
+    .pos { color: green !important; }
+    .neg { color: red; }
+    .hidden { display: none; }
+    .center { margin-top: 0; text-align: center; }
+    /* For the Date-picker example */
+    div.dp-popup { position: relative; background: #ccc; font-size: 10px; font-family: arial, sans-serif; padding: 2px; width: 171px; line-height: 1.2em; }
+    div#dp-popup { position: absolute; z-index: 199; }
+    div.dp-popup h2 { font-size: 12px; text-align: center; margin: 2px 0; padding: 0; }
+    a#dp-close { font-size: 11px; padding: 4px 0; text-align: center; display: block; }
+    a#dp-close:hover { text-decoration: underline; }
+    div.dp-popup a { color: #000; text-decoration: none; padding: 3px 2px 0; }
+    div.dp-popup div.dp-nav-prev { position: absolute; top: 2px; left: 4px; width: 100px; }
+    div.dp-popup div.dp-nav-prev a { float: left; }
+    /* Opera needs the rules to be this specific otherwise it doesn't change the cursor back to pointer after you have disabled and re-enabled a link */
+    div.dp-popup div.dp-nav-prev a, div.dp-popup div.dp-nav-next a { cursor: pointer; }
+    div.dp-popup div.dp-nav-prev a.disabled, div.dp-popup div.dp-nav-next a.disabled { cursor: default; }
+    div.dp-popup div.dp-nav-next { position: absolute; top: 2px; right: 4px; width: 100px; }
+    div.dp-popup div.dp-nav-next a { float: right; }
+    div.dp-popup a.disabled { cursor: default; color: #aaa; }
+    div.dp-popup td { cursor: pointer; }
+    div.dp-popup td.disabled { cursor: default; }
+  </style>
+</head>
+
+<body>
+
+  <div id="container">
+
+    <h1>NBL <em>&ndash; a tiny non-blocking JavaScript lazy loader.</em></h1>
+    <p class="center">
+      Homepage: <a href="http://github.com/berklee/nbl/">http://github.com/berklee/nbl/</a><br />
+      Written by Berklee
+    </p>
+    <hr />
+    <p>
+      Here are some examples that demonstrate how to use NBL in a page.
+    </p>
+
+    <!-- Example 1 -->
+    <div>
+      <h2>Example 1:</h2>
+      <p><code>&lt;script id="nbl" type="text/javascript" src="nbl.min.js" opt="{ ready: nbl_xmp1 }"&gt;&lt;/script&gt;</code></p>
+      <p>
+        By including this script tag in the head element of this document, NBL will dynamically load jQuery by default and call the
+        <code>nbl_xmp1()</code> function when it has loaded all scripts successfully or when jQuery's document.ready() fires it, 
+        whichever one comes first.
+      </p>
+      <h3>Result: <em id="result1">loading&hellip;</em></h3>
+      <ul>
+        <li><code>nbl_xmp1()</code> fired by jQuery: <em id="result1a">loading&hellip;</em></li>
+        <li>jQuery loaded: <em id="result1b">loading&hellip;</em></li>
+      </ul>
+      <p>
+        Whether <code>nbl_xmp1()</code> is triggered by jQuery or NBL varies over time, especially with small pages such as this one.
+        You can try reloading the page for different results.
+      </p>
+      <hr />
+    </div>
+    <!-- Example 2 -->
+    <div>
+      <h2>Example 2:</h2>
+      <p>
+        NBL is now resident, and we can load a new script at any time. Simply call <code>nbl.load( 'name', 'url' )</code> and a new 
+        script shall be loaded. After completion the <code>nbl_xmp1()</code> function we defined in the script tag from example 1 will 
+        be fired again. <a href="#" onclick="return clk_xmp2();">Click here</a> to add the Google Analytics Urchin.js script to this page.
+      </p>
+      <h3>Result: <em id="result2">click first&hellip;</em></h3>
+      <ul>
+        <li><code>nbl_xmp1()</code> fired by jQuery: <em id="result2a">click first&hellip;</em></li>
+        <li>Urchin loaded: <em id="result2b">click first&hellip;</em></li>
+      </ul>
+      <p>
+        Note that from this example and on, the defined ready functions will always be triggered by NBL and never by jQuery's 
+        document.ready() function, because the page has already loaded completely at this stage.
+      </p>
+      <hr />
+    </div>
+    <!-- Example 3 -->
+    <div>
+      <h2>Example 3:</h2>
+      <p>
+        Let's find out what happens when you specify a wrong url for a script. We're going to call <code>nbl.run()</code> with some
+        new options, like this:
+      </p>
+      <p><code>
+        nbl.run( { <br />
+        &nbsp;date: 'http://github.com/vitch/jquery-methods/raw/master/date.js', <br />
+        &nbsp;plugins: [ <br />
+        &nbsp;&nbsp;'http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/scripts/jquery.datePicker.js', <br />
+        &nbsp;&nbsp;'Non-existent URL' <br />
+        &nbsp;], <br />
+        &nbsp;ready: nbl_xmp3, <br />
+        &nbsp;timeout: 3500 <br />
+        } );
+      </code></p>
+      <p>
+        This will load a script with date extensions and two jQuery plugins, one date-picker and a non-existing one.
+        Trying to load the second plugin should cause an error, let's find out:
+        <a href="#" onclick="return clk_xmp3();">Click here.</a>
+      </p>
+      <h3>Result: <em id="result3">click first&hellip;</em></h3>
+      <ul>
+        <li><code>nbl_xmp3()</code> fired by jQuery: <em id="result3a">click first&hellip;</em></li>
+        <li>Date loaded: <em id="result3b">click first&hellip;</em></li>
+        <li>Plugin 1 (p0) loaded: <em id="result3c">click first&hellip;</em></li>
+        <li>Plugin 2 (p1) loaded: <em id="result3d">click first&hellip;</em></li>
+        <li>Errors: <em id="result3e">click first&hellip;</em></li>
+      </ul>
+      <p>
+        Alright, what happened here? First off, Plugin 1 and the Date script should load just fine. But Plugin 2 should 
+        fail to load immediately. This will cause NBL's timeout to go into effect, which we specified to be 3500ms. So 
+        the above results should come into view 3.5 seconds after clicking. Plugin 2 will return the script object with 
+        the faulty url still in its src attribute. Furthermore, nbl.e will return true, indicating there were errors. 
+        But there's more&hellip;
+      </p>
+      <p>
+        I noticed that network latency caused the Date script to take longer than the timeout to load. So NBL fires the 
+        defined ready function, because the timeout was reached, but Date will eventually load correctly. At that moment, 
+        NBL receives a callback and simply executes the ready function again (for each subsequent script that loads 
+        correctly). You can use this behaviour to your advantage by defining your ready function to check <code>nbl.q</code> 
+        for every script you've tried to load.
+      </p>
+      <p>
+        In this case, I'll wait for Date and Plugin 1 to have loaded before showing you the following date-picker link: 
+        <a id="datepickerlink" href="#" class="hidden"></a>
+      </p>
+      <hr />
+    </div>
+    <!-- Epilogue -->
+    <div>
+      <h2>That's it!</h2>
+      <p>
+        That should cover the basics of NBL, I hope I was able to explain its use. If you are unclear about something, feel free to 
+        contact me at: github@uncode.net
+      </p>
+      <h3>Acknowledgements:</h3>
+      <p>
+        These examples use the following scripts:
+      </p>
+      <ul>
+        <li>John Resig's (and the jQuery team's) jQuery: <a href="http://www.jquery.com/">jQuery</a></li>
+        <li>Kelvin Luck's jQuery Date picker plugin: <a href="http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/">Date picker v2</a></li>
+        <li>Jörn Zaefferer, Brandon Aaron and Kelvin Luck's Date methods: <a href="http://github.com/vitch/jquery-methods/">date.js</a></li>
+        <li>Google Analytics' Urchin script: <a href="http://www.google.com/analytics/">Google Analytics</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+</body>
+</html>

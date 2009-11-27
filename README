@@ -3,8 +3,6 @@ NBL - a tiny non-blocking JavaScript lazy loader
 Minified: 1301 bytes
 Cross-browser compatible: Tested in Safari, Firefox, IE6+, basically doing nothing too fancy.
 
-The short version:
-
 Include NBL in your pages and let it dynamically load all your JavaScript files by simply including the following tag:
 
 <script id="nbl" type="text/javascript" src="nbl.js" opt="{ urchin: 'http://www.google-analytics.com/urchin.js', plugins: [ 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], ready: my_ready_function }" />
@@ -43,6 +41,11 @@ Speaking of options, here's a short overview of the available options (in no par
   ready: function_name or function(){} -- this will be called through jQuery or after all scripts have loaded
   timeout: 1200 -- pick a number, any number (of milliseconds); I tried to pick a sensible default of 1200ms
 }
+
+All options are case-sensitive, if you include a file and name it 'urCHin', the corresponding nbl.q object will 
+be nbl.q.urCHin. I advise you to simply use lowercase for all options.
+
+You can find more examples in the included examples.html.
 
 I realise that NBL is very focussed on jQuery, but on the other hand, if you don't mind missing jQuery's 
 document.ready() function, you can just as easily replace it with MooTools or Prototype. Just supply the 
