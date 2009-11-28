@@ -44,9 +44,10 @@ Speaking of options, here's a short overview of the available options (in no par
 }
 
 All options are *case-sensitive*, if you include a file and name it 'urCHin', the corresponding nbl.q object 
-will be nbl.q.urCHin. I advise you to simply use lowercase for all options. If you do not specify any options 
-in the script tag, NBL will instantiate the default nbl object and will do nothing. You will have to do a 
-manual nbl.run( { options: here } ).
+will be nbl.q.urCHin. I advise you to simply use lowercase for all options.
+
+If you do not specify any options in the script tag, NBL will instantiate the default nbl object and will do 
+nothing. You will have to do a manual nbl.run( { options: here } ).
 
 You can find more examples in the included example.html.
 
@@ -61,5 +62,6 @@ I hope you find this useful.
 
 Berklee
 
-PS. You don't need to specify the opt attribute in the script tag, you can call nbl.run( { jquery: 'url' } ) 
-manually. And of course you can load scripts manually with nbl.load( 'name', 'url' ) at any moment as well.
+PS. As mentioned, you don't need to specify the opt attribute in the script tag, you can call 
+nbl.run( { jquery: 'url' } ) manually. And of course you can load scripts manually with nbl.load( 'name', 'url' ) 
+at any moment as well.
