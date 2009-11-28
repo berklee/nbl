@@ -22,7 +22,8 @@
 		},
 		cmp: function( n ) { // triggered on a complete load of script 'n'
 			var i, m = this;
-			m.q[n].parentNode.removeChild( m.q[n] );
+			// m.q[n].parentNode.removeChild( m.q[n] );
+			m.h.removeChild( m.q[n] );
 			m.q[n] = true;
 			m.s--;
 			// check if the currently loaded script happens to be jQuery
@@ -42,10 +43,11 @@
 			m.o -= 50
 		},
 		run: function() {
-			// read the options from the arguments, the 'opt' attribute of the 'nbl' script-tag or false
-			var k, c = document, o = arguments[0] || eval( "(" + c.getElementById( "nbl" ).getAttribute( "opt" ) + ")" ) || false, 
+			// read the options from the arguments, or from the script tag
+			var k, m, h, f = false, c = document, s = c.getElementsByTagName("script"), o = arguments[0] || f;
+			for ( k in s ) { if ( /nbl/.test( s[k].src ) ) { h = s[k].parentNode; o = o || eval( "(" + s[k].getAttribute( "opt" ) + ")" ) } }
 			m = window[o.name||'nbl'] = this; // assign the NBL with the given or default name to the window object, so we can refer to it later
-			m.c = c; m.h = ( c.getElementsByTagName("head")[0] || c.documentElement ); // define the document and document.head element
+			m.c = c; m.h = h; // define the document and document.head element
 
 			// only run when there are options
 			if ( o ) {
@@ -54,8 +56,8 @@
 				m.ready = ( o.ready || m.ready ); // ready function
 				m.i = setInterval( m.chk, 50 ); // start the interval timer
 
-				// if 'jquery: false' was given don't load jQuery, otherwise, if 'jquery: true' or 'jquery: ""' was given use the default url to load jQuery, else use the supplied url
-				if ( o.jquery !== false ) m.load( "jquery", o.jquery || m.d );
+				// if 'jquery: false' was given don't load jQuery, otherwise, if 'jquery: ""' was given use the default url to load jQuery, else use the supplied url
+				if ( o.jquery !== f ) m.load( "jquery", o.jquery || m.d );
 
 				// finally, traverse the options, filter out the settings and plugins and load the rest
 				for ( k in o ) {
