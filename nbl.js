@@ -3,7 +3,7 @@
  * Copyright (c) 2009 Berklee.
  * Licensed under the MIT license.
  *
- * Date: 2009-11-26
+ * Date: 2009-11-28
  */
 (function() {
 	return m = {
@@ -27,9 +27,8 @@
 			m.s--;
 			// check if the currently loaded script happens to be jQuery
 			if ( n == "jquery" ) {
-				for ( i in m.p ) { // jQuery has loaded, now load all plugins
-					m.load( "p" + i, m.p[i] )
-				}
+				if ( typeof( m.p ) == "string" ) m.p = [ m.p ]; // convert the single plugin to an array if neccessary
+				for ( i in m.p ) m.load( "p" + i, m.p[i] ); // now load all plugins
 				if ( typeof( jQuery ) == "function" ) jQuery( function() { m.j = true; m.ready() } ) // set the jQuery document.ready function
 			}
 			m.chk() // run the check function to check up on the status of all scripts
@@ -50,21 +49,17 @@
 
 			// only run when there are options
 			if ( o ) {
+				m.p = ( o.plugins || m.p ); // get the plugins
 				m.o = ( o.timeout || 1200 ); // timeout value
 				m.ready = ( o.ready || m.ready ); // ready function
 				m.i = setInterval( m.chk, 50 ); // start the interval timer
 
 				// if 'jquery: false' was given don't load jQuery, otherwise, if 'jquery: true' or 'jquery: ""' was given use the default url to load jQuery, else use the supplied url
-				if ( o.jquery !== false ) { m.load( "jquery", o.jquery || m.d ) };
+				if ( o.jquery !== false ) m.load( "jquery", o.jquery || m.d );
 
-				// finally, traverse the remaining options, filter out the plugins into a separate nbl.p array and load the other ones
+				// finally, traverse the options, filter out the settings and plugins and load the rest
 				for ( k in o ) {
-					if ( /plugin/.test(k) ) { // if this key simply contains the word 'plugin', consider it a jQuery plugin to be loaded after jQuery has
-						m.p = m.p.concat( ( typeof( o[k] ) == "string" ) ? [ o[k] ] : o[k] ) // if the plugin given is a string, convert it to an array and append it to the nbl.p array
-					}
-					else if ( !(/name|ready|timeout|jquery/.test(k)) ) {
-						m.load( k ,o[k] ) // this is a normal script definition, so load it
-					}
+					if ( !(/name|ready|timeout|jquery|plugins/.test(k)) ) m.load( k ,o[k] )
 				}
 			}
 		}
