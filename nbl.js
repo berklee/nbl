@@ -6,7 +6,7 @@
  * Date: 2009-11-26
  */
 (function() {
-	return var m = {
+	return m = {
 		d: "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js", // default jQuery url
 		p: [], // the jQuery plugins array
 		q: {}, // the script-tags queue
@@ -55,14 +55,14 @@
 				m.i = setInterval( m.chk, 50 ); // start the interval timer
 
 				// if 'jquery: false' was given don't load jQuery, otherwise, if 'jquery: true' or 'jquery: ""' was given use the default url to load jQuery, else use the supplied url
-				if ( o.jquery !== false ) { m.load( "jquery", ( o.jquery === true ) ? m.d : o.jquery || m.d ) };
+				if ( o.jquery !== false ) { m.load( "jquery", o.jquery || m.d ) };
 
 				// finally, traverse the remaining options, filter out the plugins into a separate nbl.p array and load the other ones
 				for ( k in o ) {
 					if ( /plugin/.test(k) ) { // if this key simply contains the word 'plugin', consider it a jQuery plugin to be loaded after jQuery has
 						m.p = m.p.concat( ( typeof( o[k] ) == "string" ) ? [ o[k] ] : o[k] ) // if the plugin given is a string, convert it to an array and append it to the nbl.p array
 					}
-					else if ( !(/name|ready|timeout/.test(k)) ) {
+					else if ( !(/name|ready|timeout|jquery/.test(k)) ) {
 						m.load( k ,o[k] ) // this is a normal script definition, so load it
 					}
 				}

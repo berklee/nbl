@@ -1,6 +1,6 @@
 NBL - a tiny non-blocking JavaScript lazy loader
 
-Minified: 1208 bytes
+Minified: 1193 bytes
 Compatibility: Tested in Safari, Firefox, IE6+, basically doing nothing too fancy.
 
 Include NBL in your pages and let it dynamically load all your JavaScript files by simply including the following tag:
