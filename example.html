@@ -3,10 +3,10 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-  <title>NBL Example</title>
+  <title>NBL – Example</title>
   <script type="text/javascript">
     // <!--
-    var nbl_count = 0, mtime = 0;
+    var nbl_count = 0, mtime = 0, nbl3_count = 0;
     function nbl_xmp1() {
       if ( nbl_count == 0 ) {
         // nbl_xmp1 was called for the first time
@@ -27,16 +27,20 @@
       return false;
     }
     function clk_xmp3() {
-      mtime = (new Date()).getTime();
-      nbl.run( {
-        date: 'http://github.com/vitch/jquery-methods/raw/master/date.js',
-        plugins: [ 
-          'http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/scripts/jquery.datePicker.js', 
-          'Non-existent URL' 
-        ], 
-        ready: nbl_xmp3,
-        timeout: 3500
-      } );
+      if ( nbl3_count == 0 )
+      {
+        mtime = (new Date()).getTime();
+        nbl.run( {
+          date: 'http://github.com/vitch/jquery-methods/raw/master/date.js',
+          plugins: [ 
+            'http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/scripts/jquery.datePicker.js', 
+            'Non-existent URL' 
+          ], 
+          ready: nbl_xmp3,
+          timeout: 3500
+        } );
+      }
+      nbl3_count++;
       return false;
     }
     function nbl_xmp3() {
@@ -57,7 +61,8 @@
   <script type="text/javascript" src="nbl.min.js" opt="{ ready: nbl_xmp1 }"></script>
   <style>
     body { font-family: Georgia, serif; line-height: 1.5; }
-    #container { margin: 4% auto; padding: 4%; width: 72%; background: #def; }
+    #container { margin: 4% auto; padding: 1% 4%; width: 72%; background: #def; }
+    #container { border-radius: 1em; -webkit-border-radius: 1em; -moz-border-radius: 1em; }
     h1 { margin-bottom: 0; text-align: center; }
     h1 em { font-size: 75%; font-weight: normal; color: inherit; }
     h3 em { font-weight: normal; }
@@ -92,10 +97,17 @@
   <div id="container">
     <h1>NBL <em>&ndash; a tiny non-blocking JavaScript lazy loader.</em></h1>
     <p class="center">
-      Homepage: <a href="http://github.com/berklee/nbl/">http://github.com/berklee/nbl/</a><br />
-      Written by Berklee
+      Homepage: <a href="http://berklee.github.com/nbl/">http://berklee.github.com/nbl/</a> &nbsp; &mdash; &nbsp;
+      GitHub: <a href="http://github.com/berklee/nbl/">http://github.com/berklee/nbl/</a><br />
+      Written by <a href="http://berklee.github.com/">Berklee</a>
     </p>
     <hr />
+    <p class="center">
+      <a href="index.html">Home</a> &nbsp; &mdash; &nbsp;
+      <b>Examples</b> &nbsp; &mdash; &nbsp;
+      <a href="documentation.html">Documentation</a>
+    </p>
+
     <p>
       Here are some examples that demonstrate how to use NBL in a page.
     </p>
@@ -213,6 +225,21 @@
         <li>Jörn Zaefferer, Brandon Aaron and Kelvin Luck's Date methods: <a href="http://github.com/vitch/jquery-methods/">date.js</a></li>
         <li>Google Analytics' Urchin script: <a href="http://www.google.com/analytics/">Google Analytics</a></li>
       </ul>
+    </div>
+
+    <p class="center">
+      <a href="index.html">Home</a> &nbsp; &mdash; &nbsp;
+      <b>Examples</b> &nbsp; &mdash; &nbsp;
+      <a href="documentation.html">Documentation</a>
+    </p>
+    <hr />
+    
+    <!--Footer -->
+    <div>
+      <p class="center">
+        Homepage: <a href="http://berklee.github.com/nbl/">http://berklee.github.com/nbl/</a> &nbsp; &mdash; &nbsp;
+        GitHub: <a href="http://github.com/berklee/nbl/">http://github.com/berklee/nbl/</a><br />
+      </p>
     </div>
 
   </div>

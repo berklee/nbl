@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+  <title>NBL – Documentation</title>
+  <style>
+    body { font-family: Georgia, serif; line-height: 1.5; }
+    #container { margin: 4% auto; padding: 1% 4%; width: 72%; background: #def; }
+    #container { border-radius: 1em; -webkit-border-radius: 1em; -moz-border-radius: 1em; }
+    h1 { margin-bottom: 0; text-align: center; }
+    h1 em { font-size: 75%; font-weight: normal; color: inherit; }
+    h3 em { font-weight: normal; }
+    hr { height: 0; border: none; border-bottom: 1px solid #bcd; }
+    li { margin-bottom: 0.5em; }
+    .pos { color: green !important; }
+    .neg { color: red; }
+    .hidden { display: none; }
+    .center { margin-top: 0; text-align: center; }
+  </style>
+</head>
+
+<body>
+
+  <div id="container">
+    <h1>NBL <em>&ndash; a tiny non-blocking JavaScript lazy loader.</em></h1>
+    <p class="center">
+      Homepage: <a href="http://berklee.github.com/nbl/">http://berklee.github.com/nbl/</a> &nbsp; &mdash; &nbsp;
+      GitHub: <a href="http://github.com/berklee/nbl/">http://github.com/berklee/nbl/</a><br />
+      Written by <a href="http://berklee.github.com/">Berklee</a>
+    </p>
+    <hr />
+    <p class="center">
+      <a href="index.html">Home</a> &nbsp; &mdash; &nbsp;
+      <a href="example.html">Examples</a> &nbsp; &mdash; &nbsp;
+      <b>Documentation</b>
+    </p>
+    
+    <!-- Introduction -->
+    <div>
+      <h2>Introduction</h2>
+      <p>
+        Include NBL in your pages and let it dynamically load all your JavaScript files by simply including the following tag:
+      </p>
+
+      <p><code>&lt;script type="text/javascript" src="nbl.js" opt="{ urchin: 'http://www.google-analytics.com/urchin.js', plugins: [ 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], ready: my_ready_function }"&gt;&lt;/script&gt;</code></p>
+
+      <p>
+        This will do the following:
+        <ol>
+          <li>It will load the latest version of jQuery from <code>http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js</code>.</li>
+          <li>It will load the Urchin script from Google Analytics.</li>
+          <li>After jQuery has loaded, it will start loading the jQuery plugins defined in the plugins array above.</li>
+          <li>When jQuery has loaded, it will attach the <code>my_ready_function()</code> to jQuery's <code>document.ready()</code> method. 
+              Sometimes your pages are rendered before jQuery is fully initialised, in those cases NBL will wait until all 
+              scripts have loaded and call the <code>my_ready_function()</code> itself.</li>
+        </ol>
+      </p>
+    </div>
+    <!-- Verifying the results -->
+    <div>
+      <h2>Verifying the results</h2>
+      <p>
+        After NBL has done its job you can verify a few things through the global <code>nbl</code> object (you can change the 
+        name of this object by specifying <code>name:</code> in the options). I'll outline the most notable below:
+        <ul>
+          <li>Every script will be placed in the <code>nbl.q</code> object, referred to by the name given in the options. By default it 
+              will load the jQuery library, so <code>nbl.q.jquery</code> will return true, as will <code>nbl.q.urchin</code> in the 
+              above example. The status of the plugins can be retrieved by <code>nbl.q.p0</code> and <code>nbl.q.p1</code>. If a script 
+              has loaded successfully, it will return true, otherwise you'll get the script element of the script you queried.</li>
+
+          <li>You can verify whether jQuery used the <code>document.ready()</code> method to call the <code>my_ready_function()</code> 
+              afterwards as <code>nbl.j</code> will be true. If the page rendered before jQuery was ready, NBL will have fired 
+              <code>my_ready_function()</code> instead and <code>nbl.j</code> will be undefined.</li>
+
+          <li>When a script fails to load, NBL will fire the <code>my_ready_function()</code> after a default timeout of 1200ms. 
+              Afterwards <code>nbl.e</code> will be set to true, signifying the error. You can change the default timeout by specifying
+              <code>timeout: 2400</code> (or any other number) in the options.</li>
+        </ul>
+      </p>
+    </div>
+    <!-- NBL's options -->
+    <div>
+      <h2>NBL's options</h2>
+      <p>
+        Here's a short overview of the available options (in no particular order):
+        <ul>
+          <li><code>name: 'nbl'</code> &mdash; this string determines the name of the NBL object</li>
+          <li><code>jquery: false or 'url'</code> &mdash; set to false won't load jQuery, or supply an alternate url</li>
+          <li><code>plugins: ['url1', 'url2'] or 'url'</code> &mdash; either an array or a single url; plugins will always load after jQuery</li>
+          <li><code>ready: function_name or function(){}</code> &mdash; this will be called through jQuery or after all scripts have loaded</li>
+          <li><code>timeout: 1200</code> &mdash; pick a number, any number (of milliseconds); I tried to pick a sensible default of 1200ms</li>
+        </ul>
+        All options are <strong>case-sensitive</strong>, if you include a file and name it <code>'urCHin'</code>, the 
+        corresponding <code>nbl.q</code> object will be <code>nbl.q.urCHin</code>. I advise you to simply use lowercase for 
+        all options.
+      </p>
+      <p>
+        If you do not specify any options in the script tag, NBL will instantiate the default <code>nbl</code> object and 
+        will do nothing. You will have to do a manual <code>nbl.run( { options: here } )</code>. You can find more examples 
+        in the <a href="example.html">examples</a>.
+      </p>
+    </div>
+    <!-- Replacing jQuery with another library -->
+    <div>
+      <h2>Replacing jQuery</h2>
+      <p>
+        I realise that NBL is very focussed on jQuery, but on the other hand, if you don't mind missing jQuery's 
+        <code>document.ready()</code> function, you can just as easily replace it with MooTools or Prototype. Just supply 
+        the required url to the <code>jquery:</code> option.
+      </p>
+      <p>
+        The plugin loading functionality remains intact, simply enter some MooTools/Prototype plugins in the <code>plugins:</code> 
+        array, and they will load as soon as the script now replacing jQuery has loaded. After all scripts are done, NBL 
+        will fire the <code>ready:</code> function and you can do your favourite library's specific code in there. That 
+        should work just fine.
+      </p>
+      <p>
+        <b>PS</b>. As mentioned, you don't need to specify the <code>opt</code> attribute in the script tag, you can call 
+        <code>nbl.run( { jquery: 'url' } )</code> manually. And of course you can load scripts manually with 
+        <code>nbl.load( 'name', 'url' )</code> at any moment as well. If you do wish to use the <code>opt</code> attribute, 
+        NBL will search for itself by looking for <code>'nbl'</code> in its filename, so make sure it has <code>'nbl'</code> 
+        in the filename!
+      </p>
+    </div>
+
+    <p class="center">
+      <a href="index.html">Home</a> &nbsp; &mdash; &nbsp;
+      <a href="example.html">Examples</a> &nbsp; &mdash; &nbsp;
+      <b>Documentation</b>
+    </p>
+    <hr />
+    
+    <!--Footer -->
+    <div>
+      <p class="center">
+        Homepage: <a href="http://berklee.github.com/nbl/">http://berklee.github.com/nbl/</a> &nbsp; &mdash; &nbsp;
+        GitHub: <a href="http://github.com/berklee/nbl/">http://github.com/berklee/nbl/</a><br />
+      </p>
+    </div>
+
+  </div>
+
+</body>
+</html>
