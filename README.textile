@@ -7,7 +7,7 @@ h3. Introduction
 
 Include NBL in your pages and let it dynamically load all your JavaScript files by simply including the following tag:
 
-@&lt;script type="text/javascript" src="nbl.js" opt="{ urchin: 'http://www.google-analytics.com/urchin.js', plugins: [ 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], ready: my_ready_function }"&gt;&lt;/script&gt;@</p>
+@<script type="text/javascript" src="nbl.js" opt="{ urchin: 'http://www.google-analytics.com/urchin.js', plugins: [ 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], ready: my_ready_function }"></script>@</p>
 
 This will do the following:
 
@@ -16,26 +16,17 @@ This will do the following:
 * After jQuery has loaded, it will start loading the jQuery plugins defined in the plugins array above.
 * When jQuery has loaded, it will attach the @my_ready_function()@ to jQuery's @document.ready()@ method. 
 
-Sometimes your pages are rendered before jQuery is fully initialised, in those cases NBL will wait until all 
-scripts have loaded and call the @my_ready_function()@ itself.
+Sometimes your pages are rendered before jQuery is fully initialised, in those cases NBL will wait until all scripts have loaded and call the @my_ready_function()@ itself.
 
 h3. Verifying the results
 
-After NBL has done its job you can verify a few things through the global @nbl@ object (you can change the 
-name of this object by specifying @name:@ in the options). I'll outline the most notable below:
+After NBL has done its job you can verify a few things through the global @nbl@ object (you can change the name of this object by specifying @name:@ in the options). I'll outline the most notable below:
 
-* Every script will be placed in the @nbl.q@ object, referred to by the name given in the options. By default it 
-will load the jQuery library, so @nbl.q.jquery@ will return true, as will @nbl.q.urchin@ in the 
-above example. The status of the plugins can be retrieved by @nbl.q.p0@ and @nbl.q.p1@. If a script 
-has loaded successfully, it will return true, otherwise you'll get the script element of the script you queried.
+* Every script will be placed in the @nbl.q@ object, referred to by the name given in the options. By default it will load the jQuery library, so @nbl.q.jquery@ will return true, as will @nbl.q.urchin@ in the above example. The status of the plugins can be retrieved by @nbl.q.p0@ and @nbl.q.p1@. If a script has loaded successfully, it will return true, otherwise you'll get the script element of the script you queried.
 
-* You can verify whether jQuery used the @document.ready()@ method to call the @my_ready_function()@ 
-afterwards as @nbl.j@ will be true. If the page rendered before jQuery was ready, NBL will have fired 
-@my_ready_function()@ instead and @nbl.j@ will be undefined.
+* You can verify whether jQuery used the @document.ready()@ method to call the @my_ready_function()@ afterwards as @nbl.j@ will be true. If the page rendered before jQuery was ready, NBL will have fired @my_ready_function()@ instead and @nbl.j@ will be undefined.
 
-* When a script fails to load, NBL will fire the @my_ready_function()@ after a default timeout of 1200ms. 
-Afterwards @nbl.e@ will be set to true, signifying the error. You can change the default timeout by specifying
-@timeout: 2400@ (or any other number) in the options.
+* When a script fails to load, NBL will fire the @my_ready_function()@ after a default timeout of 1200ms. Afterwards @nbl.e@ will be set to true, signifying the error. You can change the default timeout by specifying @timeout: 2400@ (or any other number) in the options.
 
 h3. NBL's options
 
@@ -47,27 +38,14 @@ Here's a short overview of the available options (in no particular order):
 * @ready: function_name or function(){}@ &mdash; this will be called through jQuery or after all scripts have loaded
 * @timeout: 1200@ &mdash; pick a number, any number (of milliseconds); I tried to pick a sensible default of 1200ms
 
-All options are *case-sensitive*, if you include a file and name it @'urCHin'@, the 
-corresponding @nbl.q@ object will be @nbl.q.urCHin@. I advise you to simply use lowercase for 
-all options.
+All options are *case-sensitive*, if you include a file and name it @'urCHin'@, the corresponding @nbl.q@ object will be @nbl.q.urCHin@. I advise you to simply use lowercase for all options.
 
-If you do not specify any options in the script tag, NBL will instantiate the default @nbl@ object and 
-will do nothing. You will have to do a manual @nbl.run( { options: here } )@. You can find more examples 
-in the included @example.html@.
+If you do not specify any options in the script tag, NBL will instantiate the default @nbl@ object and will do nothing. You will have to do a manual @nbl.run( { options: here } )@. You can find more examples in the included @example.html@.
 
 h3. Replacing jQuery
 
-I realise that NBL is very focussed on jQuery, but on the other hand, if you don't mind missing jQuery's 
-@document.ready()@ function, you can just as easily replace it with MooTools or Prototype. Just supply 
-the required url to the @jquery:@ option.
+I realise that NBL is very focussed on jQuery, but on the other hand, if you don't mind missing jQuery's @document.ready()@ function, you can just as easily replace it with MooTools or Prototype. Just supply the required url to the @jquery:@ option.
 
-The plugin loading functionality remains intact, simply enter some MooTools/Prototype plugins in the @plugins:@ 
-array, and they will load as soon as the script now replacing jQuery has loaded. After all scripts are done, NBL 
-will fire the @ready:@ function and you can do your favourite library's specific code in there. That 
-should work just fine.
+The plugin loading functionality remains intact, simply enter some MooTools/Prototype plugins in the @plugins:@ array, and they will load as soon as the script now replacing jQuery has loaded. After all scripts are done, NBL will fire the @ready:@ function and you can do your favourite library's specific code in there. That should work just fine.
 
-*PS*. As mentioned, you don't need to specify the @opt@ attribute in the script tag, you can call 
-@nbl.run( { jquery: 'url' } )@ manually. And of course you can load scripts manually with 
-@nbl.load( 'name', 'url' )@ at any moment as well. If you do wish to use the @opt@ attribute, 
-NBL will search for itself by looking for @'nbl'@ in its filename, so make sure it has @'nbl'@ 
-in the filename!
+*PS*. As mentioned, you don't need to specify the @opt@ attribute in the script tag, you can call @nbl.run( { jquery: 'url' } )@ manually. And of course you can load scripts manually with @nbl.load( 'name', 'url' )@ at any moment as well. If you do wish to use the @opt@ attribute, NBL will search for itself by looking for @'nbl'@ in its filename, so make sure it has @'nbl'@ in the filename!
