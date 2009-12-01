@@ -2,7 +2,7 @@ h2. NBL - a tiny non-blocking JavaScript lazy loader
 
 *Minified*: 1187 bytes
 *Compatibility*: Tested in Safari, Firefox, IE6+, basically doing nothing too fancy.
-*Examples*: http://berklee.github.com/nbl/example.html
+*Examples*: "http://berklee.github.com/nbl/example.html":http://berklee.github.com/nbl/example.html
 
 h3. Introduction
 
