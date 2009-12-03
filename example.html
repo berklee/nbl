@@ -11,13 +11,13 @@
       if ( nbl_count == 0 ) {
         // nbl_xmp1 was called for the first time
         $( '#result1' ).html( 'nbl_xmp1() was fired' ).addClass( 'pos' );
-        $( '#result1a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==undefined)?'neg':'pos' );
+        $( '#result1a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j)?'pos':'neg' );
         $( '#result1b' ).html( 'nbl.q.jquery is ' + nbl.q.jquery ).addClass( (nbl.q.jquery==true)?'pos':'neg' );
         nbl_count++;
       } else {
         // nbl_xmp1 was called for the second time
         $( '#result2' ).html( 'nbl_xmp1() was fired again' ).addClass( 'pos' );
-        $( '#result2a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==undefined)?'neg':'pos' );
+        $( '#result2a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j)?'pos':'neg' );
         $( '#result2b' ).html( 'nbl.q.urchin is ' + nbl.q.urchin ).addClass( (nbl.q.urchin==true)?'pos':'neg' );
         nbl_count++;
       }
@@ -41,7 +41,7 @@
     }
     function nbl_xmp3() {
       $( '#result3' ).html( 'nbl_xmp3() was fired after ' + ( (new Date()).getTime() - mtime ) + 'ms' ).addClass( 'pos' );
-      $( '#result3a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j==undefined)?'neg':'pos' );
+      $( '#result3a' ).html( 'nbl.j is ' + nbl.j ).addClass( (nbl.j)?'pos':'neg' );
       $( '#result3b' ).html( 'nbl.q.date is ' + nbl.q.date ).addClass( (nbl.q.date==true)?'pos':'neg' );
       $( '#result3c' ).html( 'nbl.q.p0 is ' + nbl.q.p0 ).addClass( (nbl.q.p0==true)?'pos':'neg' );
       $( '#result3d' ).html( 'nbl.q.p1 is ' + nbl.q.p1 ).addClass( (nbl.q.p1==true)?'pos':'neg' );

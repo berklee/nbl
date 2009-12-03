@@ -16,13 +16,14 @@
 			var m = this, // shortcut for the NBL object
 			s = m.q[n] = m.c.createElement("script");
 			s.setAttribute( "src", u );
-			s.onload = s.onreadystatechange = function(){ var s = this; if ( !s.readyState || /de|te/.test( s.readyState ) ) { s.onload = s.onreadystatechange = null; m.cmp( n ) } };
+			s.onload = s.onreadystatechange = function() { var s = this; if ( !s.readyState || /de|te/.test( s.readyState ) ) { s.onload = s.onreadystatechange = null; m.cmp( n ) } };
 			m.h.appendChild( s );
-			m.s++ // increase stack
+			m.s++; // increase stack
+			m.j = false
 		},
 		cmp: function( n ) { // triggered on a complete load of script 'n'
+			// alert( n + ' fired complete' )
 			var i, m = this;
-			// m.q[n].parentNode.removeChild( m.q[n] );
 			m.h.removeChild( m.q[n] );
 			m.q[n] = true;
 			m.s--;
@@ -30,7 +31,7 @@
 			if ( n == "jquery" ) {
 				if ( typeof( m.p ) == "string" ) m.p = [ m.p ]; // convert the single plugin to an array if neccessary
 				for ( i in m.p ) m.load( "p" + i, m.p[i] ); // now load all plugins
-				if ( typeof( jQuery ) == "function" ) jQuery( function() { m.j = true; m.ready() } ) // set the jQuery document.ready function
+				if ( typeof( jQuery ) == "function" && m.s == 0 ) jQuery( function() { m.j = true; m.ready() } ) // set the jQuery document.ready function
 			}
 			m.chk() // run the check function to check up on the status of all scripts
 		},
@@ -38,7 +39,7 @@
 			if ( m.o < 0 || m.s == 0 ) {
 				clearInterval( m.i );
 				m.e = Boolean( m.s );
-				m.ready()
+				if ( !m.j ) m.ready()
 			}
 			m.o -= 50
 		},

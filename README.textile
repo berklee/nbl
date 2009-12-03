@@ -1,6 +1,6 @@
 h2. NBL - a tiny non-blocking JavaScript lazy loader
 
-*Minified*: 1187 bytes
+*Minified*: 1215 bytes
 *Compatibility*: Tested in Safari, Firefox, IE6+, basically doing nothing too fancy.
 *Examples*: "http://berklee.github.com/nbl/example.html":http://berklee.github.com/nbl/example.html
 
@@ -50,3 +50,25 @@ I realise that NBL is very focussed on jQuery, but on the other hand, if you don
 The plugin loading functionality remains intact, simply enter some MooTools/Prototype plugins in the @plugins:@ array, and they will load as soon as the script now replacing jQuery has loaded. After all scripts are done, NBL will fire the @ready:@ function and you can do your favourite library's specific code in there. That should work just fine.
 
 *PS*. As mentioned, you don't need to specify the @opt@ attribute in the script tag, you can call @nbl.run( { jquery: 'url' } )@ manually. And of course you can load scripts manually with @nbl.load( 'name', 'url' )@ at any moment as well. If you do wish to use the @opt@ attribute, NBL will search for itself by looking for @'nbl'@ in its filename, so make sure it has @'nbl'@ in the filename!
+
+h3. MIT License
+
+Copyright (c) 2009 Berklee
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
