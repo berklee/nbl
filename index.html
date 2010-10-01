@@ -3,32 +3,29 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-  <title>NBL – a tiny non-blocking JavaScript lazy loader</title>
+  <title>NBL.js 2.0 – a tiny non-blocking JavaScript lazy loader</title>
   <style>
     body { font-family: Georgia, serif; line-height: 1.5; }
-    #container { margin: 4% auto; padding: 1% 4%; width: 72%; background: #def; }
-    #container { border-radius: 1em; -webkit-border-radius: 1em; -moz-border-radius: 1em; }
-    h1 { margin-bottom: 0; text-align: center; }
-    h1 em { font-size: 75%; font-weight: normal; color: inherit; }
+    #container { position: relative; margin: 1em auto 2em; padding: 4em; width: 48em; background: #def; border-radius: 0.5em; box-shadow: 0 0.5em 0.5em #888; -moz-box-shadow: 0 0.5em 0.5em #888; -webkit-box-shadow: 0 0.5em 0.5em #888; }
+    h1, h2 { font-family: Futura, "Century Gothic", AppleGothic, sans-serif; }
+		h1 { font-size: 400%; margin: 0; color: #678; text-shadow: 1px 1px 1px #fff; text-shadow: -1px -1px 1px #345; }
+		h2 { margin-top: 2em; }
+		h2.sub { margin: 0.5em; ;text-align: center; font-style: italic; font-weight: normal; color: #567; }
     h3 em { font-weight: normal; }
-    hr { height: 0; border: none; border-bottom: 1px solid #bcd; }
-    li { margin-bottom: 0.5em; }
-    .pos { color: green !important; }
-    .neg { color: red; }
+    hr { margin-bottom: 0.5em; height: 0; border: none; border-bottom: 1px solid #bcd; }
     .hidden { display: none; }
     .center { margin-top: 0; text-align: center; }
+		.pullout { display: block; float: right; margin: 2.5em 0 1em 2em; background-color: #678; color: #fff; border-radius: 0.5em; box-shadow: -2px -2px 2px #345; -moz-box-shadow: -2px -2px 2px #345; -webkit-box-shadow: -2px -2px 2px #345; }
+		.pullout ul { list-style: none; margin: 0; padding: 2em; }
   </style>
 </head>
 
 <body>
 
   <div id="container">
-    <h1>NBL <em>&ndash; a tiny non-blocking JavaScript lazy loader.</em></h1>
-    <p class="center">
-      Homepage: <a href="http://berklee.github.com/nbl/">http://berklee.github.com/nbl/</a> &nbsp; &mdash; &nbsp;
-      GitHub: <a href="http://github.com/berklee/nbl/">http://github.com/berklee/nbl/</a><br />
-      Written by <a href="http://berklee.github.com/">Berklee</a>
-    </p>
+    <h1>NBL.js 2.0</h1>
+    <h2 class="sub">(a tiny non-blocking JavaScript lazy loader)</h2>
+    <a href="http://github.com/berklee/nbl/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
     <hr />
     <p class="center">
       <b>Home</b> &nbsp; &mdash; &nbsp;
@@ -36,73 +33,95 @@
       <a href="documentation.html">Documentation</a>
     </p>
     
-    <!-- What NBL does -->
-    <div>
-      <p>
-        <b>Minified:</b> 1215 bytes<br />
-        <b>Compatibility:</b> Tested in Safari, Firefox, IE6+, basically doing nothing too fancy.
-      </p>
-      <h2>What NBL does</h2>
-      <p>
-        NBL (let's say "nibble") is a small JavaScript library that allows you to dynamically load your JavaScript files in parallel 
-        with the other content of your site. Traditionally including your scripts in the <code>&lt;head&gt;</code> tag of your pages 
-        would cause a browser to load the files in one after another, in some cases even blocking other files from loading.
-      </p>
-      <p>
-        However, dynamically loading your scripts has one drawback: in some cases the scripts are loaded out of order. If you want 
-        to load jQuery and a jQuery plugin, dynamically loading could mean the plugin initialises <em>before</em> jQuery even 
-        finishes loading. NBL solves this by letting you define your main script separately from your plugins, in effect your plugins 
-        load after the main script has finished loading.
-      </p>
-    </div>
-    <!-- How NBL works -->
-    <div>
-      <h2>How NBL works</h2>
-      <p>
-        Simply include the following tag in your page:
-      </p>
-      <p><code>&lt;script type="text/javascript" src="nbl.js" opt="{ urchin: 'http://www.google-analytics.com/urchin.js', plugins: [ 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], ready: my_ready_function }"&gt;&lt;/script&gt;</code></p>
-      <p>
-        This will do the following:
-        <ol>
-          <li>It will load the latest version of jQuery from <code>http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js</code>.</li>
-          <li>It will load the Urchin script from Google Analytics.</li>
-          <li>After jQuery has loaded, it will start loading the jQuery plugins defined in the plugins array above.</li>
-          <li>When jQuery has loaded, it will attach the <code>my_ready_function()</code> to jQuery's <code>document.ready()</code> method. 
-              Sometimes your pages are rendered before jQuery is fully initialised, in those cases NBL will wait until all 
-              scripts have loaded and call the <code>my_ready_function()</code> itself.</li>
-        </ol>
-        After NBL has done its job you can verify a few things through the global <code>nbl</code> object (you can change the name 
-        of this object by specifying <code>name:</code> in the options). Read more about the options in the <a href="documentation.html">documentation</a>.
-      </p>
-      <p>
-        <strong>NB</strong>. While jQuery loads by default, it is possible to replace it with your favourite library by 
-        specifying the <code>jquery:</code> option with your script. Any plugins specified will then load <em>after</em> this 
-        script has loaded.
-      </p>
-    </div>
-    <!-- Examples -->
+
+    <div class="pullout">
+			<ul>
+				<li><strong>GZipped</strong>: 583 bytes</li>
+				<li><strong>Minified</strong>: 958 bytes</li>
+				<li><strong>Single line</strong>: 882 bytes</li>
+			</ul>
+		</div>
+
+    <div class="intro">
+      <h2>What is NBL.js?</h2>
+			<p>
+				NBL.js is a tiny script that will make your HTML pages load faster by loading all your JavaScript files  
+				asynchronously (in parallel) with the rest of your page. Normally if you include two or three scripts
+				in your page, the browser will wait for them to be executed before your page is shown.
+			</p>
+			<p>
+				By using NBL.js the browser can start showing the HTML while loading and executing the scripts, resulting 
+				in a faster, more responsive website. All in less than 1kb! Check out some <a href="http://berklee.github.com/nbl/example.html">examples</a>.
+			</p>
+			<h3>Features:</h3>
+			<ul>
+				<li>Load scripts asynchronously or in order, or any combination of both</li>
+				<li>Every script can have its own callback</li>
+				<li>Trigger a callback on a user definable timeout period</li>
+				<li>Uses HTML5's data attribute for configuration, so load all scripts with one script-tag</li>
+				<li>Also available as a single line for inclusion in your HTML page</li>
+				<li>Tested in Safari, Chrome, Firefox, IE6+, basically doing nothing too fancy.</li>
+				<li>Less than 1kb!</li>
+			</ul>
+			
+		</div>
+
+		<div>
+			<h2>Usage</h2>
+			<p>
+				Include NBL.js in your pages and let it dynamically load all your JavaScript files by simply including 
+				the following tag:
+			</p>
+			
+			<p>
+				<code>&lt;script src="nbl.js" data-nbl="[ [ 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], function(e){ jquery_loaded(e) }, 'http://www.google-analytics.com/urchin.js', function(){ urchin_loaded() } ]"&gt;&lt;/script&gt;</code>
+			</p>
+
+			<p>
+				This will do the following:
+				<ol>
+					<li>It will load the latest version of jQuery.</li>
+					<li>It will load the Urchin script from Google Analytics.</li>
+					<li>After jQuery has loaded, it will start loading the jQuery plugins as defined after jQuery in parallel.</li>
+					<li>When jQuery has loaded, it will call the <code>jquery_loaded()</code> function.</li>
+					<li>Finally, when Urchin has loaded, it will call the <code>urchin_loaded()</code> function.</li>
+				</ol>
+			</p>
+			
+			<h3>Verifying the results</h3>
+			
+			<p>
+				After NBL.js has done its job you can verify a few things through the global <code>nbl</code> object. Every 
+				script will be placed in the <code>nbl.q</code> object, referred to by the filename of the script minus the 
+				".js" or .min.js" extension or any non-word characters.
+			</p>
+			<p>
+				For an overview of all options, please refer to the <a href="documentation.html">documentation</a>.
+			</p>
+		</div>
+
     <div>
       <h2>Examples</h2>
       <p>
-        I've put together a few examples <a href="">here</a>. For more information, please refer to the <a href="documentation.html">documentation</a>
+        I've put together a few examples <a href="example.html">here</a>. For more information, please refer to the <a href="documentation.html">documentation</a>
       </p>
     </div>
-    <!-- Acknowledgements -->
+
     <div>
       <h2>Acknowledgements</h2>
       <p>
-        Thanks to Ajaxian for <a href="http://ajaxian.com/archives/labjs-gets-even-faster-with-version-1-0">featuring NBL on 30 November 2009</a>, 
+        Thanks to Ajaxian for <a href="http://ajaxian.com/archives/labjs-gets-even-faster-with-version-1-0">featuring NBL.js v1 on 30 November 2009</a>, 
         right next to <a href="http://blog.getify.com/2009/11/labjs-new-hotness-for-script-loading/">LABjs</a>, a similar library by Steve Souders 
         and Kyle Simpson. <a href="http://www.stevesouders.com/blog/2009/04/27/loading-scripts-without-blocking/">Steve Souders' research</a> into 
         dynamic script loading in particular was very helpful. Also helpful was <a href="http://code.google.com/p/ajaxsoft/wiki/xLazyLoader">Oleg 
         Slobodskoi's xLazyLoader jQuery plugin</a>, which also loads CSS and images dynamically, but requires jQuery to be loaded first.
       </p>
       <p>
-        NBL is licensed under the MIT License.
+        NBL.js is licensed under the MIT License.
       </p>
     </div>
 
+		<br /><br />
     <p class="center">
       <b>Home</b> &nbsp; &mdash; &nbsp;
       <a href="example.html">Examples</a> &nbsp; &mdash; &nbsp;
