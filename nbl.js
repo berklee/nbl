@@ -82,7 +82,7 @@ this.nbl = {
         if (r) s.l(r); // Call nbl.l() with the remaining elements of the original array
         if (l) l(); // Call the callback function l
         s.s--
-      }
+      };
       if ( !s.readyState || /de|te/.test( s.readyState ) ) {
         s.onload = s.onreadystatechange = m.n; d() // On completion execute the callback function as defined above
       }
@@ -90,5 +90,5 @@ this.nbl = {
 		m.s++;
 		m.h.appendChild(s) // Add the script to the document
   }
-}
+};
 nbl.l()

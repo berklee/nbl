@@ -2,60 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-  <title>NBL.js 2.0</title>
-  <script src="nbl.js" data-nbl="['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', 'http://www.google-analytics.com/urchin.js', function(){nbl_init_xmp1()}]"></script>
-  <script type="text/javascript">
-    // <!--
-    var nbl_count = 0, mtime = 0;
-    function nbl_init_xmp1() {
-			if (typeof jQuery == 'function') {
-				// nbl_xmp1 was called for the first time
-				$( '#result1' ).html( 'nbl_init_xmp1() was fired' ).addClass( 'pos' );
-				$( '#result1a' ).html( 'nbl.q.jquery is ' + nbl.q.jquery ).addClass( (nbl.q.jquery==true)?'pos':'neg' );
-				$( '#result1b' ).html( 'nbl.q.urchin is ' + nbl.q.urchin ).addClass( (nbl.q.urchin==true)?'pos':'neg' );
-			} else {
-				window.setTimeout( nbl_init_xmp1, 250 )
-			}
-    }
-    function nbl_init_xmp2() {
-			if (typeof $.fn.jcaption == 'function') {
-				// nbl_xmp1 was called for the second time
-				$( '#result2' ).html( 'nbl_inti_xmp2() was fired' ).addClass( 'pos' );
-				$( '#result2a' ).html( 'nbl.q.jcaption is ' + nbl.q.jcaption ).addClass( (nbl.q.jcaption)?'pos':'neg' );
-				$( "#photo-xmp2" ).jcaption({copyStyle: true, animate: true, show: {height: "show"}, hide: {height: "hide"}});
-			}	 else {
-				window.setTimeout( nbl_init_xmp2, 250 )
-			}
-    }
-    function clk_xmp2() {
-      nbl.l(['http://files.www.gethifi.com/posts/jcaption/jcaption.min.js', function(){nbl_init_xmp2()}]);
-      return false;
-    }
-    function clk_xmp3() {
-      mtime = (new Date()).getTime();
-      nbl.l([
-				3500, function(e){nbl_init_xmp3(e)}, 
-				'http://github.com/vitch/jquery-methods/raw/master/date.js', [ 'http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/scripts/jquery.datePicker.js', 'Non-existent URL' ]
-      ]);
-      return false;
-    }
-    function nbl_init_xmp3(e) {
-      $( '#result3' ).html( 'nbl_init_xmp3() was fired after ' + ( (new Date()).getTime() - mtime ) + 'ms' ).addClass( 'pos' );
-      $( '#result3a' ).html( 'nbl.q.jquery is ' + nbl.q.jquery ).addClass( (nbl.q.jquery)?'pos':'neg' );
-      $( '#result3b' ).html( 'nbl.q.date is ' + nbl.q.date ).addClass( (nbl.q.date==true)?'pos':'neg' );
-      $( '#result3c' ).html( 'nbl.q.jquerydatePicker is ' + nbl.q.jquerydatePicker ).addClass( (nbl.q.jquerydatePicker==true)?'pos':'neg' );
-      $( '#result3d' ).html( 'nbl.q.NonexistentURL is ' + nbl.q.NonexistentURL ).addClass( (nbl.q.NonexistentURL==true)?'pos':'neg' );
-      $( '#result3e' ).html( (typeof e=='undefined')?'There were no errors':'There were errors' ).addClass( (typeof e=='undefined')?'pos':'neg' );
-      
-      if ( nbl.q.jquerydatePicker == nbl.q.date ) {
-        $( '#datepickerlink' ).datePicker().dpSetPosition($.dpConst.POS_BOTTOM,0).dpSetOffset(0,92);
-        $( '#datepickerlink' ).removeClass( 'hidden' );
-      } else {
-        $( '#datepickerlink' ).html( 'There was an error' ).click( function(){return false} ).addClass( 'neg' ).removeClass( 'hidden' );
-      }
-    }
-    // -->
-  </script>
+  <title>NBL.js 2.0 — a tiny non-blocking JavaScript lazy loader</title>
   <style>
     body { font-family: Georgia, serif; line-height: 1.5; }
     #container { position: relative; margin: 1em auto 2em; padding: 4em; width: 48em; background: #def; border-radius: 0.5em; box-shadow: 0 0.5em 0.5em #888; -moz-box-shadow: 0 0.5em 0.5em #888; -webkit-box-shadow: 0 0.5em 0.5em #888; }
@@ -83,7 +30,7 @@
     <div class="pullout">
 			<ul>
 				<li><strong>GZipped</strong>: 583 bytes</li>
-				<li><strong>Minified</strong>: 953 bytes</li>
+				<li><strong>Minified</strong>: 955 bytes</li>
 				<li><strong>Single line</strong>: 882 bytes</li>
 			</ul>
 		</div>
