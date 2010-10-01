@@ -1,70 +1,94 @@
 /*
- * NBL: Non Blocking Lazy loader v1.0
- * Copyright (c) 2009 Berklee.
+ * NBL: Non Blocking Lazy loader v2.0
+ * Copyright (c) 2010 Berklee.
  * Licensed under the MIT license.
  *
- * Date: 2009-11-28
+ * Date: 2010-09-24
  */
-(function() {
-	return m = {
-		d: "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js", // default jQuery url
-		p: [], // the jQuery plugins array
-		q: {}, // the script-tags queue
-		s: 0, // the script-tags stack
-		ready: function(){},
-		load: function( n, u ) { // loads a given url 'u' with the given name 'n' via dynamic script-tag
-			var m = this, // shortcut for the NBL object
-			s = m.q[n] = m.c.createElement("script");
-			s.setAttribute( "src", u );
-			s.onload = s.onreadystatechange = function() { var s = this; if ( !s.readyState || /de|te/.test( s.readyState ) ) { s.onload = s.onreadystatechange = null; m.cmp( n ) } };
-			m.h.appendChild( s );
-			m.s++; // increase stack
-			m.j = false
-		},
-		cmp: function( n ) { // triggered on a complete load of script 'n'
-			// alert( n + ' fired complete' )
-			var i, m = this;
-			m.h.removeChild( m.q[n] );
-			m.q[n] = true;
-			m.s--;
-			// check if the currently loaded script happens to be jQuery
-			if ( n == "jquery" ) {
-				if ( typeof( m.p ) == "string" ) m.p = [ m.p ]; // convert the single plugin to an array if neccessary
-				for ( i in m.p ) m.load( "p" + i, m.p[i] ); // now load all plugins
-				if ( typeof( jQuery ) == "function" && m.s == 0 ) jQuery( function() { m.j = true; m.ready() } ) // set the jQuery document.ready function
-			}
-			m.chk() // run the check function to check up on the status of all scripts
-		},
-		chk: function() { // check for a non-empty stack, meaning scripts have not loaded successfully
-			if ( m.o < 0 || m.s == 0 ) {
-				clearInterval( m.i );
-				m.e = Boolean( m.s );
-				if ( !m.j ) m.ready()
-			}
-			m.o -= 50
-		},
-		run: function() {
-			// read the options from the arguments, or from the script tag
-			var k, m, h, f = false, c = document, s = c.getElementsByTagName("script"), o = arguments[0] || f;
-			for ( k in s ) { if ( /nbl/.test( s[k].src ) ) { h = s[k].parentNode; o = o || eval( "(" + s[k].getAttribute( "opt" ) + ")" ) } }
-			m = window[o.name||'nbl'] = this; // assign the NBL with the given or default name to the window object, so we can refer to it later
-			m.c = c; m.h = h; // define the document and document.head element
+this.nbl = {
+	c: document,
+	q: {}, // The dictionary that will hold the script-queue
+  n: null,
+  
+  // The loader function
+  //
+  // Called with an array, it will interpret the options array
+  // Called without an array it will try to load the options from the script-tag's data-nbl attribute
+	l: function(a) { 
+    var b, c, x, y, z, s, l, i = j = 0, m = this;
+    
+    // The timeout counter, counts backwards every 50ms from 50 ticks (50*50=2500ms by default)
+    if (!m.i) {
+      m.s = m.f = 0; // Reset counters: completed, created, timeout function
+      m.i = setInterval(
+        function() { 
+          // If the timeout counter dips below zero, or the amount of completed scripts equals the amount 
+          // of created script-tags, we can clear the interval
+          if (m.o < 0 || m.s == 0) { 
+            m.i = clearInterval(m.i); 
+            // If the amount of completed scripts is smaller than the amount of created script-tags,
+            // and there is a timeout function available, call it with the current script-queue.
+            (m.s > 0 && m.f) && m.f(m.q)
+          } 
+          m.o--
+        },
+        m.o = 50 // Set the initial ticks at 50, as well as the interval at 50ms
+      );
+    }
 
-			// only run when there are options
-			if ( o ) {
-				m.p = ( o.plugins || m.p ); // get the plugins
-				m.o = ( o.timeout || 1200 ); // timeout value
-				m.ready = ( o.ready || m.ready ); // ready function
-				m.i = setInterval( m.chk, 50 ); // start the interval timer
-
-				// if 'jquery: false' was given don't load jQuery, otherwise, if 'jquery: ""' was given use the default url to load jQuery, else use the supplied url
-				if ( o.jquery !== f ) m.load( "jquery", o.jquery || m.d );
-
-				// finally, traverse the options, filter out the settings and plugins and load the rest
-				for ( k in o ) {
-					if ( !(/name|ready|timeout|jquery|plugins/.test(k)) ) m.load( k ,o[k] )
-				}
-			}
-		}
-	}
-})().run();
+    // If no arguments were given (a == l, which is null), try to load the options from the script tag
+    if (a == m.n) {
+      s = m.c.getElementsByTagName("script"); // Get all script tags in the current document
+      while (j < s.length) {
+        if ((a = eval("("+s[j].getAttribute("data-nbl")+")")) && a) { // Check for the data-nbl attribute
+          m.h = m.c.head || s[j].parentNode;
+          break
+        }
+        j++
+      }
+    }
+    
+    // If an options array was provided, proceed to interpret it
+    if (a.shift) {
+	    while (i < a.length) { // Loop through the options
+        b = a[i]; // Get the current element
+        c = a[i+1]; // Get the next element
+        x = 'function';
+        y = typeof b; 
+        z = typeof c;
+        l = (z == x) ? c : (y == x) ? b : m.n; // Check whether the current or next element is a function and store it
+        if (y == 'number') m.o = b/50; // If the current element is a number, set the timeout interval to this number/50
+        // If the current element is a string, call this.a() with the string as a one-element array and the callback function l
+        if (y == 'string') m.a([b], l); 
+        // If the current element is an array, call this.a() with a two-element array of the string and the next element
+        // as well as the callback function l
+        if (b.shift) m.a([b.shift(), b], l); 
+        if (!m.f && l) m.f = l; // Store the function l as the timeout function if it hasn't been set yet
+        i++
+      }
+    }
+  },
+  a: function(u,l) {
+    var s, m = this, n = u[0].replace(/.+\/|\.min\.js|\.js$|\W/g, ''); // Clean up the name of the script for storage in the queue
+    s = m.q[n] = m.c.createElement("script");
+		s.setAttribute("src", u[0]);
+		// When this script completes loading, it will trigger a callback function consisting of two things:
+		// 1. It will call nbl.l() with the remaining items in u[1] (if there are any)
+		// 2. It will execute the function l (if it is a function)
+    s.onload = s.onreadystatechange = function(){
+      var s = this, d = function(){
+        var s = m, r = u[1]; 
+        s.q[n] = true; // Set the entry for this script in the script-queue to true
+        if (r) s.l(r); // Call nbl.l() with the remaining elements of the original array
+        if (l) l(); // Call the callback function l
+        s.s--
+      }
+      if ( !s.readyState || /de|te/.test( s.readyState ) ) {
+        s.onload = s.onreadystatechange = m.n; d() // On completion execute the callback function as defined above
+      }
+    };
+		m.s++;
+		m.h.appendChild(s) // Add the script to the document
+  }
+}
+nbl.l()

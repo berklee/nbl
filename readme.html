@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+  <title>NBL.js 2.0</title>
+  <script src="nbl.js" data-nbl="['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', 'http://www.google-analytics.com/urchin.js', function(){nbl_init_xmp1()}]"></script>
+  <script type="text/javascript">
+    // <!--
+    var nbl_count = 0, mtime = 0;
+    function nbl_init_xmp1() {
+			if (typeof jQuery == 'function') {
+				// nbl_xmp1 was called for the first time
+				$( '#result1' ).html( 'nbl_init_xmp1() was fired' ).addClass( 'pos' );
+				$( '#result1a' ).html( 'nbl.q.jquery is ' + nbl.q.jquery ).addClass( (nbl.q.jquery==true)?'pos':'neg' );
+				$( '#result1b' ).html( 'nbl.q.urchin is ' + nbl.q.urchin ).addClass( (nbl.q.urchin==true)?'pos':'neg' );
+			} else {
+				window.setTimeout( nbl_init_xmp1, 250 )
+			}
+    }
+    function nbl_init_xmp2() {
+			if (typeof $.fn.jcaption == 'function') {
+				// nbl_xmp1 was called for the second time
+				$( '#result2' ).html( 'nbl_inti_xmp2() was fired' ).addClass( 'pos' );
+				$( '#result2a' ).html( 'nbl.q.jcaption is ' + nbl.q.jcaption ).addClass( (nbl.q.jcaption)?'pos':'neg' );
+				$( "#photo-xmp2" ).jcaption({copyStyle: true, animate: true, show: {height: "show"}, hide: {height: "hide"}});
+			}	 else {
+				window.setTimeout( nbl_init_xmp2, 250 )
+			}
+    }
+    function clk_xmp2() {
+      nbl.l(['http://files.www.gethifi.com/posts/jcaption/jcaption.min.js', function(){nbl_init_xmp2()}]);
+      return false;
+    }
+    function clk_xmp3() {
+      mtime = (new Date()).getTime();
+      nbl.l([
+				3500, function(e){nbl_init_xmp3(e)}, 
+				'http://github.com/vitch/jquery-methods/raw/master/date.js', [ 'http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/scripts/jquery.datePicker.js', 'Non-existent URL' ]
+      ]);
+      return false;
+    }
+    function nbl_init_xmp3(e) {
+      $( '#result3' ).html( 'nbl_init_xmp3() was fired after ' + ( (new Date()).getTime() - mtime ) + 'ms' ).addClass( 'pos' );
+      $( '#result3a' ).html( 'nbl.q.jquery is ' + nbl.q.jquery ).addClass( (nbl.q.jquery)?'pos':'neg' );
+      $( '#result3b' ).html( 'nbl.q.date is ' + nbl.q.date ).addClass( (nbl.q.date==true)?'pos':'neg' );
+      $( '#result3c' ).html( 'nbl.q.jquerydatePicker is ' + nbl.q.jquerydatePicker ).addClass( (nbl.q.jquerydatePicker==true)?'pos':'neg' );
+      $( '#result3d' ).html( 'nbl.q.NonexistentURL is ' + nbl.q.NonexistentURL ).addClass( (nbl.q.NonexistentURL==true)?'pos':'neg' );
+      $( '#result3e' ).html( (typeof e=='undefined')?'There were no errors':'There were errors' ).addClass( (typeof e=='undefined')?'pos':'neg' );
+      
+      if ( nbl.q.jquerydatePicker == nbl.q.date ) {
+        $( '#datepickerlink' ).datePicker().dpSetPosition($.dpConst.POS_BOTTOM,0).dpSetOffset(0,92);
+        $( '#datepickerlink' ).removeClass( 'hidden' );
+      } else {
+        $( '#datepickerlink' ).html( 'There was an error' ).click( function(){return false} ).addClass( 'neg' ).removeClass( 'hidden' );
+      }
+    }
+    // -->
+  </script>
+  <style>
+    body { font-family: Georgia, serif; line-height: 1.5; }
+    #container { position: relative; margin: 1em auto 2em; padding: 4em; width: 48em; background: #def; border-radius: 0.5em; box-shadow: 0 0.5em 0.5em #888; -moz-box-shadow: 0 0.5em 0.5em #888; -webkit-box-shadow: 0 0.5em 0.5em #888; }
+    h1, h2 { font-family: Futura, "Century Gothic", AppleGothic, sans-serif; }
+		h1 { font-size: 400%; margin: 0; color: #678; text-shadow: 1px 1px 1px #fff; text-shadow: -1px -1px 1px #345; }
+		h2 { margin-top: 2em; }
+		h2.sub { margin: 0.5em; ;text-align: center; font-style: italic; font-weight: normal; color: #567; }
+    h3 em { font-weight: normal; }
+    hr { margin-bottom: 2em; height: 0; border: none; border-bottom: 1px solid #bcd; }
+    .hidden { display: none; }
+    .center { margin-top: 0; text-align: center; }
+		.pullout { display: block; float: right; margin: 1em 0 1em 2em; background-color: #678; color: #fff; border-radius: 0.5em; box-shadow: -2px -2px 2px #345; -moz-box-shadow: -2px -2px 2px #345; -webkit-box-shadow: -2px -2px 2px #345; }
+		.pullout ul { list-style: none; margin: 0; padding: 2em; }
+  </style>
+</head>
+
+<body>
+
+  <div id="container">
+    <h1>NBL.js 2.0</h1>
+    <h2 class="sub">(a tiny non-blocking JavaScript lazy loader)</h2>
+    <a href="http://github.com/berklee/nbl/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+    <hr />
+
+    <div class="pullout">
+			<ul>
+				<li><strong>GZipped</strong>: 583 bytes</li>
+				<li><strong>Minified</strong>: 953 bytes</li>
+				<li><strong>Single line</strong>: 882 bytes</li>
+			</ul>
+		</div>
+
+    <div class="intro">
+      <h2>What is NBL.js?</h2>
+			<p>
+				NBL.js is a tiny script that will make your HTML pages load faster by loading all your JavaScript files  
+				asynchronously (in parallel) with the rest of your page. Normally if you include two or three scripts
+				in your page, the browser will wait for them to be executed before your page is shown.
+			</p>
+			<p>
+				By using NBL.js the browser can start showing the HTML while loading and executing the scripts, resulting 
+				in a faster, more responsive website. All in less than 1kb! Check out some <a href="http://berklee.github.com/nbl/example.html">examples</a>.
+			</p>
+			<h3>Features:</h3>
+			<ul>
+				<li>Load scripts asynchronously or in order, or any combination of both</li>
+				<li>Every script can have its own callback</li>
+				<li>Trigger a callback on a user definable timeout period</li>
+				<li>Uses HTML5's data attribute for configuration, so load all scripts with one script-tag</li>
+				<li>Also available as a single line for inclusion in your HTML page</li>
+				<li>Tested in Safari, Chrome, Firefox, IE6+, basically doing nothing too fancy.</li>
+				<li>Less than 1kb!</li>
+			</ul>
+			
+		</div>
+		
+		<div>
+			<h2>Usage</h2>
+			<p>
+				Include NBL.js in your pages and let it dynamically load all your JavaScript files by simply including 
+				the following tag:
+			</p>
+			
+			<p>
+				<code>&lt;script src="nbl.js" data-nbl="[ [ 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], function(e){ jquery_loaded(e) }, 'http://www.google-analytics.com/urchin.js', function(){ urchin_loaded() } ]"&gt;&lt;/script&gt;</code>
+			</p>
+
+			<p>
+				This will do the following:
+				<ol>
+					<li>It will load the latest version of jQuery.</li>
+					<li>It will load the Urchin script from Google Analytics.</li>
+					<li>After jQuery has loaded, it will start loading the jQuery plugins as defined after jQuery in parallel.</li>
+					<li>When jQuery has loaded, it will call the <code>jquery_loaded()</code> function.</li>
+					<li>Finally, when Urchin has loaded, it will call the <code>urchin_loaded()</code> function.</li>
+				</ol>
+			</p>
+			
+			<h3>Verifying the results</h3>
+			
+			<p>
+				After NBL.js has done its job you can verify a few things through the global <code>nbl</code> object. Every 
+				script will be placed in the <code>nbl.q</code> object, referred to by the filename of the script minus the 
+				".js" or .min.js" extension or any non-word characters.
+			</p>
+			<p>
+				In the above example "jquery.lightbox.min.js" will become "jquerylightbox". If it has loaded successfully, 
+				<code>nbl.q.jquerylightbox</code> will return true, otherwise you'll get the script element of the script you queried.
+			</p>
+			<p>
+				When a script fails to load, NBL will fire the first defined function it encounters after a default timeout of 2500ms. 
+				In the above example that function is <code>jquery_loaded()</code>. If jQuery loads fine, but one of the plugins doesn't, 
+				the timeout will expire and call <code>jquery_loaded()</code> once again, only this time it will provide the <code>nbl.q</code> 
+				object as its only argument <code>e</code>.
+			</p>
+			<p>
+				That way you can distinguish between a normal call and a timed out call, check out the 
+				<a href="http://berklee.github.com/nbl/example.html">examples</a> for more information on this feature.
+			</p>
+			
+			<h2>Options</h2>
+
+			<p>
+				NBL.js is rather flexible in its options, so let's dissect a few examples.
+			</p>
+
+			<h3>Loading three scripts asynchronously:</h3>
+
+			<p><code>[ 'script1.js', 'script2.js', 'script3.js' ]</code></p>
+
+			<p>This will simply load all three scripts in parallel.</p>
+
+			<h3>Loading two scripts asynchronously, and two plugins asynchronously after the first script:</h3>
+
+			<p><code>[ [ 'script1.js', 'plugin1.js', 'plugin2.js' ], 'script2.js' ]</code></p>
+
+			<p>This will load <code>script1.js</code> and <code>script2.js</code> in parallel. After <code>script1.js</code> 
+				has loaded, <code>plugin1.js</code> and <code>plugin2.js</code> will load in parallel.</p>
+
+			<p>When NBL.js encounters an array of scripts, it will immediately load the first script (<code>script1.js</code> 
+				in this case) and load the remaining scripts (<code>plugin1.js</code> and <code>plugin2.js</code>) after 
+				completion. The <code>plugin1.js</code> and <code>plugin2.js</code> scripts have a lower priority than the 
+				<code>script1.js</code> and <code>script2.js</code> scripts and will be loaded after <code>script1.js</code> 
+				completes.</p>
+
+			<h3>Loading four scripts in order:</h3>
+
+			<p><code>[ [ 'script1.js', [ 'script2.js', [ 'script3.js, 'script4.js ] ] ] ]</code></p>
+
+			<p>It's a bit crazy, but nesting the arrays like this will allow you to load all scripts sequentially. After 
+			the first array with <code>script1.js</code>, NBL.js encounters a second array starting with <code>script2.js</code>, 
+			which it will load after <code>script1.js</code> has completed.</p>
+
+			<p>After <code>script2.js</code> completes, NBL.js will continue the iteration with the third array that starts with 
+			<code>script3.js</code>, finally ending with loading <code>script4.js</code> after <code>script3.js</code> has 
+			completed.</p>
+
+			<h3>Three scripts with their own callbacks:</h3>
+
+			<p><code>[ 'script1.js', function(e){ script1_callback(e) }, 'script2.js', function(){ script2_callback() }, 'script3.js', function(){ script3_callback() } ]</code></p>
+
+			<p>The basic rule of callbacks is: declare the callback function directly after the script.</p>
+
+			<p>In this example, the three scripts will load in parallel and upon completion of each script, the 
+			corresponding callback will be called. In case of a timeout, the first defined function 
+			(<code>script1_callback(e)</code>) will be called with <code>nbl.q</code> as argument <code>e</code> (as explained above).</p>
+
+			<h3>Two scripts and a plugin with their own callbacks:</h3>
+
+			<p><code>[ [ 'script1.js', 'plugin1.js', function(){ plugin1_callback() } ], function(e){ script1_callback(e) }, 'script2.js', function(){ script2_callback() } ]</code></p>
+
+			<p>Following the basic rule of callbacks as mentioned above, we place the callback function for <code>script1.js</code> 
+			<em>outside</em> the array that contains <code>script1.js</code> and <code>plugin1.js</code>, since to NBL.js 
+			<code>script1.js</code> and <code>script2.js</code> are on equal footing, the callbacks for both must be placed in the main array.</p>
+
+			<h3>Defining a global timeout function and a new timeout:</h3>
+
+			<p><code>[ 3200, function(e){ global_timeout(e) }, 'script1.js', function(){ script1_callback() }, 'script2.js', function(){ script2_callback() } ]</code></p>
+
+			<p>First off, by specifying a number anywhere in the options, NBL.js will assume you want to change the timeout from the 
+				default 2500ms to the provided number. Second, by putting a function before any scripts, it will define it as the global 
+				timeout function.</p>
+
+			<p>In this case <code>script1_callback()</code> and <code>script2_callback()</code> will be called when <code>script1.js</code> 
+				and <code>script2.js</code> are finished loading. And in case of an error, <code>global_timeout()</code> will be called after 
+				approximately 3500ms.</p>
+
+			<h2>Alternative usage</h2>
+
+			<p>
+				If you prefer you can choose to simply include NBL.js in a single line in your HTML pages. This way you can 
+				save a HTTP-call from the browser, and it will only add 882 bytes to your HTML page. Simply include the code 
+				in <code>nbl.single.js</code> into a <code>&lt;script&gt;</code> tag at the end of your page, and replace 
+				<code>['your', 'scripts', 'here']</code> with your own options.
+			</p>
+
+			<p>
+				You can't use the <code>data-nbl</code> attribute of the script tag if you use this method.
+			</p>
+
+			<h2>Final note</h2>
+
+			<p>
+				All options are <em>case-sensitive</em>, if you include a file called <code>urCHin.js</code>, the corresponding 
+				<code>nbl.q</code> object will be <code>nbl.q.urCHin</code>. I advise you to simply use lowercase for all options.
+			</p>
+
+			<p>
+				If you do not specify any options in the script tag, NBL.js will instantiate the default <code>nbl</code> object 
+				and will do nothing. You will have to do a manual <code>nbl.l( [ 'your', 'options', 'here' ] )</code>.
+			</p>
+
+			<p>
+				You can find more examples in the included <a href="http://berklee.github.com/nbl/example.html">examples</a>.
+			</p>
+
+			<p>
+				I hope you find NBL.js useful, thanks for reading this!
+			</p>
+
+			<p>
+				Berklee
+			</p>
+
+			<h2>MIT License</h2>
+
+			<pre>
+	Copyright (c) 2009-2010 Berklee
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+			</pre>
+		</div>
+
+  </div>
+
+</body>
+</html>
