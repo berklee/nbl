@@ -15,7 +15,7 @@ this.nbl = {
   // Called with an array, it will interpret the options array
   // Called without an array it will try to load the options from the script-tag's data-nbl attribute
 	l: function(a) { 
-    var b, c, x, y, z, s, l, i = j = 0, m = this;
+    var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body;
     
     // The timeout counter, counts backwards every 50ms from 50 ticks (50*50=2500ms by default)
     if (!m.i) {
@@ -41,7 +41,7 @@ this.nbl = {
       s = m.c.getElementsByTagName("script"); // Get all script tags in the current document
       while (j < s.length) {
         if ((a = eval("("+s[j].getAttribute("data-nbl")+")")) && a) { // Check for the data-nbl attribute
-          m.h = m.c.head || s[j].parentNode;
+          m.h = s[j].parentNode;
           break
         }
         j++

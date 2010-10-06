@@ -133,6 +133,12 @@ I hope you find NBL.js useful, thanks for reading this!
 
 Berklee
 
+h2. NBL Plus: support for images and CSS 
+
+GitHub user Knowlecules mailed me with modifications to pre-load CSS and images using NBL.js. I've incorporated that code 
+into nbl.plus.js (and nbl.plus.min.js). To be honest, I've tried to test this version as well as I could, but it could still 
+contain a bug or two. If you encounter one, please post an issue on GitHub. Thanks in advance!
+
 h2. MIT License
 
 Copyright (c) 2009-2010 Berklee
