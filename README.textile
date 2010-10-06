@@ -105,7 +105,9 @@ h3. Defining a global timeout function and a new timeout:
 
 @[ 3200, function(e){ global_timeout(e) }, 'script1.js', function(){ script1_callback() }, 'script2.js', function(){ script2_callback() } ]@
 
-First off, by specifying a number anywhere in the options, NBL.js will assume you want to change the timeout from the default 2500ms to the provided number. Second, by putting a function before any scripts, it will define it as the global timeout function.
+First off, by specifying a number anywhere in the options, NBL.js will assume you want to change the timeout 
+from the default 2500ms to the provided number. Second, by putting a function before any scripts, it will 
+define it as the global timeout function.
 
 In this case @script1_callback()@ and @script2_callback()@ will be called when @script1.js@ and @script2.js@ 
 are finished loading. And in case of an error, @global_timeout()@ will be called after approximately 3500ms.
@@ -135,9 +137,11 @@ Berklee
 
 h2. NBL Plus: support for images and CSS 
 
-GitHub user Knowlecules mailed me with modifications to pre-load CSS and images using NBL.js. I've incorporated that code 
-into nbl.plus.js (and nbl.plus.min.js). To be honest, I've tried to test this version as well as I could, but it could still 
-contain a bug or two. If you encounter one, please post an issue on GitHub. Thanks in advance!
+GitHub user Knowlecules mailed me with modifications to preload CSS and images using NBL.js. I've incorporated 
+that code into @nbl.plus.js@ (and @nbl.plus.min.js@). To be honest, I've tried to test this version as well as 
+I could, but it could still contain a bug or two. If you encounter one, please post an issue on GitHub.
+
+Thanks in advance!
 
 h2. MIT License
 
