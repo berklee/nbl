@@ -69,10 +69,11 @@ this.nbl = {
     }
   },
   a: function(u,l) {
-    var s, t, m = this, n = u[0].replace(/.+\/|\.min\.js|\.js$|\W/gi, ''), k = {js: {t: "script", a: "src"}, css: {t: "link", a: "href"}, "i": {t: "img", a: "src"}}; // Clean up the name of the script for storage in the queue
+    var s, t, m = this, n = u[0].replace(/.+\/|\.min\.js|\.js$|\W/gi, ''), k = {js: {t: "script", a: "src"}, css: {t: "link", a: "href", r: "stylesheet"}, "i": {t: "img", a: "src"}}; // Clean up the name of the script for storage in the queue
     t = u[0].match(/\.([cjs]{2,4})$/i); t = (t) ? t[1] : "i";
     s = m.q[n] = m.c.createElement(k[t].t);
 		s.setAttribute(k[t].a, u[0]);
+		if (k[t].r) s.setAttribute("rel", k[t].r);
 		// When this script completes loading, it will trigger a callback function consisting of two things:
 		// 1. It will call nbl.l() with the remaining items in u[1] (if there are any)
 		// 2. It will execute the function l (if it is a function)
