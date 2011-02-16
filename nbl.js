@@ -49,7 +49,7 @@ this.nbl = {
     }
     
     // If an options array was provided, proceed to interpret it
-    if (a.shift) {
+    if (a&&a.shift) {
 	    while (i < a.length) { // Loop through the options
         b = a[i]; // Get the current element
         c = a[i+1]; // Get the next element
