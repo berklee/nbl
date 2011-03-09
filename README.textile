@@ -2,7 +2,7 @@ h1. NBL.js 2.0 - a tiny non-blocking JavaScript lazy loader
 
 *GZipped*: 593 bytes
 *Minified*: 971 bytes
-*Single line*: 884 bytes
+*Single line*: 812 bytes
 *Compatibility*: Tested in Safari, Chrome, Firefox, IE6+, basically doing nothing too fancy.
 *Examples*: "http://berklee.github.com/nbl/example.html":http://berklee.github.com/nbl/example.html
 
