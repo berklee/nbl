@@ -62,7 +62,7 @@ this.nbl = {
         if (y == 'string') m.a([b], l); 
         // If the current element is an array, call this.a() with a two-element array of the string and the next element
         // as well as the callback function l
-        if (b.shift) m.a([b.shift(), b], l); 
+        b.shift && m.a([b.shift(), b], l); 
         if (!m.f && l) m.f = l; // Store the function l as the timeout function if it hasn't been set yet
         i++
       }
@@ -79,8 +79,8 @@ this.nbl = {
       var s = this, d = function(){
         var s = m, r = u[1]; 
         s.q[n] = true; // Set the entry for this script in the script-queue to true
-        if (r) s.l(r); // Call nbl.l() with the remaining elements of the original array
-        if (l) l(); // Call the callback function l
+        r && s.l(r); // Call nbl.l() with the remaining elements of the original array
+        l && l(); // Call the callback function l
         s.s--
       };
       if ( !s.readyState || /de|te/.test( s.readyState ) ) {
