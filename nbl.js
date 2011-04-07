@@ -69,7 +69,7 @@ this.nbl = {
     }
   },
   a: function(u,l) {
-    var s, m = this, n = u[0].replace(/.+\/|\.min\.js|\.js$|\W/g, ''); // Clean up the name of the script for storage in the queue
+    var s, m = this, n = u[0].replace(/.+\/|\.min\.js|\.js|\?.+|\W/g, ''); // Clean up the name of the script for storage in the queue
     s = m.q[n] = m.c.createElement("script");
 		s.setAttribute("src", u[0]);
 		// When this script completes loading, it will trigger a callback function consisting of two things:
