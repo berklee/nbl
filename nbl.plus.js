@@ -15,15 +15,7 @@ this.nbl = {
 	// Called with an array, it will interpret the options array
 	// Called without an array it will try to load the options from the script-tag's data-nbl attribute
 	l: function(a) { 
-<<<<<<< HEAD
-<<<<<<< HEAD
-		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body;
-=======
-		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body || m.c.documentElement || m.h;
->>>>>>> Added document.documentElement as per Keefedm's suggestion (Thanks!) and updated the documentation
-=======
-		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body || m.c.documentElement || m.h;
->>>>>>> Added document.documentElement as per Keefedm's suggestion (Thanks!) and updated the documentation
+		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body || m.h;
 		
 		// The timeout counter, counts backwards every 50ms from 50 ticks (50*50=2500ms by default)
 		if (!m.i) {
@@ -77,7 +69,7 @@ this.nbl = {
 		}
 	},
 	a: function(u,l) {
-		var s, t, m = this, n = u[0].replace(/.+\/|\.min\.js|\.js|\?.+|\W/gi, ''), k = {js: {t: "script", a: "src"}, css: {t: "link", a: "href", r: "stylesheet"}, "i": {t: "img", a: "src"}}; // Clean up the name of the script for storage in the queue
+		var s, t, m = this, n = u[0].replace(/.+\/|\.min\.js|\.js|\?.+|\W/g, ''), k = {js: {t: "script", a: "src"}, css: {t: "link", a: "href", r: "stylesheet"}, "i": {t: "img", a: "src"}}; // Clean up the name of the script for storage in the queue
 		t = u[0].match(/\.([cjs]{2,4})$|\?.+/i); t = (t) ? t[1] : "i";
 		s = m.q[n] = m.c.createElement(k[t].t);
 		s.setAttribute(k[t].a, u[0]);
