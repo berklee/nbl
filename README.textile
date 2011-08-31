@@ -1,8 +1,8 @@
 h1. NBL.js 2.0 - a tiny non-blocking JavaScript lazy loader
 
-*GZipped*: 593 bytes
-*Minified*: 977 bytes
-*Single line*: 816 bytes
+*GZipped*: 587 bytes
+*Minified*: 955 bytes
+*Single line*: 805 bytes
 *Compatibility*: Tested in Safari, Chrome, Firefox, IE6+, basically doing nothing too fancy.
 *Examples*: "http://berklee.github.com/nbl/example.html":http://berklee.github.com/nbl/example.html
 
@@ -135,9 +135,6 @@ I hope you find NBL.js useful, thanks for reading this!
 
 Berklee
 
-*(@Berklee on Twitter or feedback at berkl.ee)*
-
-
 h2. NBL Plus: support for images and CSS *updated*
 
 GitHub user Knowlecules mailed me with modifications to preload CSS and images using NBL.js. I've incorporated 
@@ -147,7 +144,7 @@ the latest version of NBL Plus is now better than ever! Clocking in at 1119 byte
 
 h2. MIT License
 
-Copyright (c) 2009-2011 Berklee
+Copyright (c) 2009-2010 Berklee
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
