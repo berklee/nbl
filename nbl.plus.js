@@ -15,7 +15,7 @@ this.nbl = {
 	// Called with an array, it will interpret the options array
 	// Called without an array it will try to load the options from the script-tag's data-nbl attribute
 	l: function(a) { 
-		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body || m.h;
+		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body;
 		
 		// The timeout counter, counts backwards every 50ms from 50 ticks (50*50=2500ms by default)
 		if (!m.i) {
