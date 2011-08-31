@@ -16,7 +16,11 @@ this.nbl = {
 	// Called without an array it will try to load the options from the script-tag's data-nbl attribute
 	l: function(a) { 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body;
+=======
+		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body || m.c.documentElement || m.h;
+>>>>>>> Added document.documentElement as per Keefedm's suggestion (Thanks!) and updated the documentation
 =======
 		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body || m.c.documentElement || m.h;
 >>>>>>> Added document.documentElement as per Keefedm's suggestion (Thanks!) and updated the documentation
