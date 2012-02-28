@@ -96,31 +96,36 @@
                 name = addList[0].replace(/.+\/|\.min\.js|\.js|\?.+|\W/gi, ''),
                 k = {'js': {tagname: "script", attr: "src"},
                     'css': {tagname: "link", attr: "href", relat: "stylesheet"},
-                    'i': {tagname: "img", attr: "src"}}; // Clean up the name of the script for storage in the queue
+                    'i': {tagname: "img", attr: "src"}}, // Clean up the name of the script for storage in the queue
+                loaded = function(){
+                    var scriptHandler = addList[1];
+                    queue[name] = true; // Set the entry for this script in the script-queue to true
+                    if(scriptHandler){ load(scriptHandler);} // Call nbl.l() with the remaining elements of the original array
+                    if(handler){ handler();} // Call the callback function l
+                };
             type = addList[0].match(/\.([cjs]{2,4})$|\?.+/i);
             type = (type) ? type[1] : "i";
+            if(queue[name] === true) {
+                // don't readd script if script already added
+                return loaded();
+            }
             tag = queue[name] = document.createElement(k[type].tagname);
             tag.setAttribute(k[type].attr, addList[0]);
             // Fix: CSS links do not fire onload events - Richard Lopes
             // Images do. Limitation: no callback function possible after CSS loads
             if (k[type].relat) {
                 tag.setAttribute("rel", k[type].relat);
+                loaded();
             } else {
                 // When this script completes loading, it will trigger a callback function consisting of two things:
                 // 1. It will call nbl.l() with the remaining items in u[1] (if there are any)
                 // 2. It will execute the function l (if it is a function)
                 tag.onload = tag.onreadystatechange = function(){
-                    var s = this,
-                        loaded = function(){
-                            var scriptHandler = addList[1];
-                            queue[name] = true; // Set the entry for this script in the script-queue to true
-                            if(scriptHandler){ load(scriptHandler);} // Call nbl.l() with the remaining elements of the original array
-                            if(handler){ handler();} // Call the callback function l
-                            pendingCount--;
-                        };
+                    var s = this;
                     if ( !s.readyState || /de|te/.test( s.readyState ) ) {
                         s.onload = (s.onreadystatechange = 0);
                         loaded(); // On completion execute the callback function as defined above
+                        pendingCount--;
                     }
                 };
                 pendingCount++;
