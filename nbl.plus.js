@@ -5,96 +5,119 @@
  *
  * Date: 2010-09-24
  */
-this.nbl = {
-	c: document,
-	q: {}, // The dictionary that will hold the script-queue
-	n: null,
-	
-	// The loader function
-	//
-	// Called with an array, it will interpret the options array
-	// Called without an array it will try to load the options from the script-tag's data-nbl attribute
-	l: function(a) { 
-		var b, c, x, y, z, s, l, i = j = 0, m = this; m.h = m.c.head || m.c.body || m.c.documentElement || m.h;
-		
-		// The timeout counter, counts backwards every 50ms from 50 ticks (50*50=2500ms by default)
-		if (!m.i) {
-			m.s = m.f = 0; // Reset counters: completed, created, timeout function
-			m.i = setInterval(
-				function() { 
-					// If the timeout counter dips below zero, or the amount of completed scripts equals the amount 
-					// of created script-tags, we can clear the interval
-					if (m.o < 0 || m.s == 0) { 
-						m.i = clearInterval(m.i); 
-						// If the amount of completed scripts is smaller than the amount of created script-tags,
-						// and there is a timeout function available, call it with the current script-queue.
-						(m.s > 0 && m.f) && m.f(m.q)
-					} 
-					m.o--
-				},
-				m.o = 50 // Set the initial ticks at 50, as well as the interval at 50ms
-			);
-		}
 
-		// If no arguments were given (a == l, which is null), try to load the options from the script tag
-		if (a == m.n) {
-			s = m.c.getElementsByTagName("script"); // Get all script tags in the current document
-			while (j < s.length) {
-				if ((a = eval("("+s[j].getAttribute("data-nbl")+")")) && a) { // Check for the data-nbl attribute
-					m.h = s[j].parentNode;
-					break
-				}
-				j++
-			}
-		}
-		
-		// If an options array was provided, proceed to interpret it
-		if (a&&a.shift) {
-			while (i < a.length) { // Loop through the options
-				b = a[i]; // Get the current element
-				c = a[i+1]; // Get the next element
-				x = 'function';
-				y = typeof b; 
-				z = typeof c;
-				l = (z == x) ? c : (y == x) ? b : m.n; // Check whether the current or next element is a function and store it
-				if (y == 'number') m.o = b/50; // If the current element is a number, set the timeout interval to this number/50
-				// If the current element is a string, call this.a() with the string as a one-element array and the callback function l
-				if (y == 'string') m.a([b], l); 
-				// If the current element is an array, call this.a() with a two-element array of the string and the next element
-				// as well as the callback function l
-				b.shift && m.a([b.shift(), b], l); 
-				if (!m.f && l) m.f = l; // Store the function l as the timeout function if it hasn't been set yet
-				i++
-			}
-		}
-	},
-	a: function(u,l) {
-		var s, t, m = this, n = u[0].replace(/.+\/|\.min\.js|\.js|\?.+|\W/gi, ''), k = {js: {t: "script", a: "src"}, css: {t: "link", a: "href", r: "stylesheet"}, "i": {t: "img", a: "src"}}; // Clean up the name of the script for storage in the queue
-		t = u[0].match(/\.([cjs]{2,4})$|\?.+/i); t = (t) ? t[1] : "i";
-		s = m.q[n] = m.c.createElement(k[t].t);
-		s.setAttribute(k[t].a, u[0]);
-		// Fix: CSS links do not fire onload events - Richard Lopes
-		// Images do. Limitation: no callback function possible after CSS loads
-		if (k[t].r) s.setAttribute("rel", k[t].r);
-		else {
-			// When this script completes loading, it will trigger a callback function consisting of two things:
-			// 1. It will call nbl.l() with the remaining items in u[1] (if there are any)
-			// 2. It will execute the function l (if it is a function)
-			s.onload = s.onreadystatechange = function(){
-				var s = this, d = function(){
-					var s = m, r = u[1]; 
-					s.q[n] = true; // Set the entry for this script in the script-queue to true
-					r && s.l(r); // Call nbl.l() with the remaining elements of the original array
-					l && l(); // Call the callback function l
-					s.s--
-				};
-				if ( !s.readyState || /de|te/.test( s.readyState ) ) {
-					s.onload = s.onreadystatechange = m.n; d() // On completion execute the callback function as defined above
-				}
-			};
-			m.s++
-		}
-		m.h.appendChild(s) // Add the script to the document
-	}
-};
-nbl.l()
+// ==ClosureCompiler==
+// @output_file_name default.js
+// @compilation_level ADVANCED_OPTIMIZATIONS
+// ==/ClosureCompiler==
+
+/**
+ * @constructor
+ */
+(function (document, nul) {
+    var queue = {},  // The dictionary that will hold the script-queue
+        timeout, ticks,
+        timeoutHandler,
+        pendingCount,
+        head = document.head || document.body || document.documentElement,
+        // The loader function
+        //
+        // Called with an array, it will interpret the options array
+        // Called without an array it will try to load the options from the script-tag's data-nbl attribute
+        /**
+         * @param {*=} params
+         */
+            load = function(params) {
+            var cur_element, next_element, function_type, cur_type, next_type, scripts, handler, i=0,j = 0;
+
+            // The timeout counter, counts backwards every 50ms from 50 ticks (50*50=2500ms by default)
+            if (!timeout) {
+                pendingCount = timeoutHandler = 0; // Reset counters: completed, created, timeout function
+                timeout = setInterval(
+                    function() {
+                        // If the timeout counter dips below zero, or the amount of completed scripts equals the amount
+                        // of created script-tags, we can clear the interval
+                        if (ticks < 0 || pendingCount == 0) {
+                            timeout = clearInterval(timeout);
+                            // If the amount of completed scripts is smaller than the amount of created script-tags,
+                            // and there is a timeout function available, call it with the current script-queue.
+                            (pendingCount > 0 && timeoutHandler) && timeoutHandler(queue);
+                        }
+                        ticks--
+                    },
+                    ticks = 50 // Set the initial ticks at 50, as well as the interval at 50ms
+                );
+            }
+
+            // If no arguments were given (a == l, which is null), try to load the options from the script tag
+            if (params == nul) {
+                scripts = document.getElementsByTagName("script"); // Get all script tags in the current document
+                while (j < scripts.length) {
+                    if ((params = eval("("+scripts[j].getAttribute("data-nbl")+")")) && params) { // Check for the data-nbl attribute
+                        head = scripts[j].parentNode;
+                        break
+                    }
+                    j++
+                }
+            }
+
+            // If an options array was provided, proceed to interpret it
+            if (params && params.shift) {
+                while (i < params.length) { // Loop through the options
+                    cur_element = params[i]; // Get the current element
+                    next_element = params[i+1]; // Get the next element
+                    function_type = 'function';
+                    cur_type = typeof cur_element;
+                    next_type = typeof next_element;
+                    handler = (next_type == function_type) ?
+                        next_element :
+                        (cur_type == function_type) ? cur_element : nul; // Check whether the current or next element is a function and store it
+                    if (cur_type == 'number') ticks = cur_element/50; // If the current element is a number, set the timeout interval to this number/50
+                    // If the current element is a string, call this.addScripts() with the string as a one-element array and the callback function l
+                    if (cur_type == 'string') addScripts([cur_element], handler);
+                    // If the current element is an array, call this.addScripts() with a two-element array of the string and the next element
+                    // as well as the callback function l
+                    cur_element.shift && addScripts([cur_element.shift(), cur_element], handler);
+
+                    if (!timeoutHandler && handler) timeoutHandler = handler; // Store the function l as the timeout function if it hasn't been set yet
+                    i++
+                }
+            }
+        },
+        addScripts = function(addList, handler) {
+            var tag, type, m = this,
+                name = addList[0].replace(/.+\/|\.min\.js|\.js|\?.+|\W/gi, ''),
+                k = {'js': {tagname: "script", attr: "src"},
+                    'css': {tagname: "link", attr: "href", relat: "stylesheet"},
+                    'i': {tagname: "img", attr: "src"}}; // Clean up the name of the script for storage in the queue
+            type = addList[0].match(/\.([cjs]{2,4})$|\?.+/i);
+            type = (type) ? type[1] : "i";
+            tag = queue[name] = document.createElement(k[type].tagname);
+            tag.setAttribute(k[type].attr, addList[0]);
+            // Fix: CSS links do not fire onload events - Richard Lopes
+            // Images do. Limitation: no callback function possible after CSS loads
+            if (k[type].relat) tag.setAttribute("rel", k[type].relat);
+            else {
+                // When this script completes loading, it will trigger a callback function consisting of two things:
+                // 1. It will call nbl.l() with the remaining items in u[1] (if there are any)
+                // 2. It will execute the function l (if it is a function)
+                tag.onload = tag.onreadystatechange = function(){
+                    var s = this,
+                        loaded = function(){
+                            var scriptHandler = addList[1];
+                            queue[name] = true; // Set the entry for this script in the script-queue to true
+                            scriptHandler && load(scriptHandler); // Call nbl.l() with the remaining elements of the original array
+                            handler && handler(); // Call the callback function l
+                            pendingCount--;
+                        };
+                    if ( !s.readyState || /de|te/.test( s.readyState ) ) {
+                        s.onload = s.onreadystatechange = nul; loaded() // On completion execute the callback function as defined above
+                    }
+                };
+                pendingCount++
+            }
+            head.appendChild(tag) // Add the script to the document
+        };
+    window['nbl'] = {'l':load};
+    load();
+}(document, null));
