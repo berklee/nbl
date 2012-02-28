@@ -11,14 +11,18 @@
 // @compilation_level ADVANCED_OPTIMIZATIONS
 // ==/ClosureCompiler==
 
+/*jslint browser: true, white: true, eqeq: true, plusplus: true */
+
 /**
  * @constructor
  */
-(function (document, nul) {
+(function (document) {
+    "use strict";
     var queue = {},  // The dictionary that will hold the script-queue
         timeout, ticks,
         timeoutHandler,
         pendingCount,
+        addScripts,
         head = document.head || document.body || document.documentElement,
         // The loader function
         //
@@ -37,27 +41,29 @@
                     function() {
                         // If the timeout counter dips below zero, or the amount of completed scripts equals the amount
                         // of created script-tags, we can clear the interval
-                        if (ticks < 0 || pendingCount == 0) {
+                        if (ticks < 0 || !pendingCount) {
                             timeout = clearInterval(timeout);
                             // If the amount of completed scripts is smaller than the amount of created script-tags,
                             // and there is a timeout function available, call it with the current script-queue.
-                            (pendingCount > 0 && timeoutHandler) && timeoutHandler(queue);
+                            if(pendingCount > 0 && timeoutHandler) {timeoutHandler(queue);}
                         }
-                        ticks--
+                        ticks--;
                     },
                     ticks = 50 // Set the initial ticks at 50, as well as the interval at 50ms
                 );
             }
 
             // If no arguments were given (a == l, which is null), try to load the options from the script tag
-            if (params == nul) {
+            if (!params) {
                 scripts = document.getElementsByTagName("script"); // Get all script tags in the current document
                 while (j < scripts.length) {
-                    if ((params = eval("("+scripts[j].getAttribute("data-nbl")+")")) && params) { // Check for the data-nbl attribute
+                    /*jslint evil:true */
+                    params = eval("("+scripts[j].getAttribute("data-nbl")+")");
+                    if (params) { // Check for the data-nbl attribute
                         head = scripts[j].parentNode;
-                        break
+                        break;
                     }
-                    j++
+                    j++;
                 }
             }
 
@@ -71,21 +77,22 @@
                     next_type = typeof next_element;
                     handler = (next_type == function_type) ?
                         next_element :
-                        (cur_type == function_type) ? cur_element : nul; // Check whether the current or next element is a function and store it
-                    if (cur_type == 'number') ticks = cur_element/50; // If the current element is a number, set the timeout interval to this number/50
+                        (cur_type == function_type) ? cur_element : 0; // Check whether the current or next element is a function and store it
+                    if (cur_type == 'number') {ticks = cur_element/50;} // If the current element is a number, set the timeout interval to this number/50
                     // If the current element is a string, call this.addScripts() with the string as a one-element array and the callback function l
-                    if (cur_type == 'string') addScripts([cur_element], handler);
+                    if (cur_type == 'string') {addScripts([cur_element], handler);}
                     // If the current element is an array, call this.addScripts() with a two-element array of the string and the next element
                     // as well as the callback function l
-                    cur_element.shift && addScripts([cur_element.shift(), cur_element], handler);
+                    if(cur_element.shift) { addScripts([cur_element.shift(), cur_element], handler);}
 
-                    if (!timeoutHandler && handler) timeoutHandler = handler; // Store the function l as the timeout function if it hasn't been set yet
-                    i++
+                    if (!timeoutHandler && handler) {timeoutHandler = handler;} // Store the function l as the timeout function if it hasn't been set yet
+                    i++;
                 }
             }
-        },
+        };
         addScripts = function(addList, handler) {
-            var tag, type, m = this,
+            /*jslint regexp: true*/
+            var tag, type,
                 name = addList[0].replace(/.+\/|\.min\.js|\.js|\?.+|\W/gi, ''),
                 k = {'js': {tagname: "script", attr: "src"},
                     'css': {tagname: "link", attr: "href", relat: "stylesheet"},
@@ -96,8 +103,9 @@
             tag.setAttribute(k[type].attr, addList[0]);
             // Fix: CSS links do not fire onload events - Richard Lopes
             // Images do. Limitation: no callback function possible after CSS loads
-            if (k[type].relat) tag.setAttribute("rel", k[type].relat);
-            else {
+            if (k[type].relat) {
+                tag.setAttribute("rel", k[type].relat);
+            } else {
                 // When this script completes loading, it will trigger a callback function consisting of two things:
                 // 1. It will call nbl.l() with the remaining items in u[1] (if there are any)
                 // 2. It will execute the function l (if it is a function)
@@ -106,18 +114,19 @@
                         loaded = function(){
                             var scriptHandler = addList[1];
                             queue[name] = true; // Set the entry for this script in the script-queue to true
-                            scriptHandler && load(scriptHandler); // Call nbl.l() with the remaining elements of the original array
-                            handler && handler(); // Call the callback function l
+                            if(scriptHandler){ load(scriptHandler);} // Call nbl.l() with the remaining elements of the original array
+                            if(handler){ handler();} // Call the callback function l
                             pendingCount--;
                         };
                     if ( !s.readyState || /de|te/.test( s.readyState ) ) {
-                        s.onload = s.onreadystatechange = nul; loaded() // On completion execute the callback function as defined above
+                        s.onload = (s.onreadystatechange = 0);
+                        loaded(); // On completion execute the callback function as defined above
                     }
                 };
-                pendingCount++
+                pendingCount++;
             }
-            head.appendChild(tag) // Add the script to the document
+            head.appendChild(tag); // Add the script to the document
         };
-    window['nbl'] = {'l':load};
+    window["nbl"] = {'l':load};
     load();
-}(document, null));
+}(document));
