@@ -139,7 +139,7 @@
 					loadedScripts[name] = true; // add this script to loaded scripts list
 					if(handler){ handler();} // Call the callback function l
 				};
-			type = item.match(/\.([cjs]{2,4})$|\?.+/i);
+			type = item.match(/\.([cjs]{2,4})($|\?)/i);
 			type = type ? type[1] : "i";
 			if(loadedScripts[name]) {
 				// don't readd script if script already added
