@@ -19,6 +19,7 @@
 (function (document) {
 	"use strict";
 	var loadedScripts = {},  // The dictionary that will hold the loaded script
+		noop = function(){},
 		addScript, loadItems,
 		head = document.head || document.body || document.documentElement,
 		// The loader function
@@ -65,7 +66,7 @@
 				}
 			}
 			if (params) {
-				loadItems(params, callback||function(){});
+				loadItems(params, callback||noop);
 			}
 
 			// If an options array was provided, proceed to interpret it
@@ -132,14 +133,14 @@
 				// remove extension
 				name = item.replace(/.+\/|\.min\.js|\.js|\?.+|\W/gi, ''),
 				// 
-				loadTypes = {'js': {tagname: "script", attr: "src"},
-					'css': {tagname: "link", attr: "href", relat: "stylesheet"},
+				loadTypes = {'j': {tagname: "script", attr: "src"},
+					'cs': {tagname: "link", attr: "href", relat: "stylesheet"},
 					'i': {tagname: "img", attr: "src"}}, // Clean up the name of the script for storage in the queue
 				loaded = function(){
 					loadedScripts[name] = true; // add this script to loaded scripts list
 					if(handler){ handler();} // Call the callback function l
 				};
-			type = item.match(/\.([cjs]{2,4})($|\?)/i);
+			type = item.match(/\.(cs|j)s($|\?)/i);
 			type = type ? type[1] : "i";
 			if(loadedScripts[name]) {
 				// don't readd script if script already added
@@ -159,7 +160,8 @@
 				tag.onload = tag.onreadystatechange = function(){
 					var s = this;
 					if ( !s.readyState || /de|te/.test( s.readyState ) ) {
-						s.onload = (s.onreadystatechange = 0);
+						// setting `onreadystatechange` to 0 raises an error in IE6/7/8
+						s.onload = s.onreadystatechange = noop;
 						loaded(); // On completion execute the callback function as defined above
 					}
 				};
