@@ -1,8 +1,7 @@
-h1. NBL.js 2.0 - a tiny non-blocking JavaScript lazy loader
+h1. NBL.js 3.0 - a tiny non-blocking JavaScript/CSS/Image lazy loader
 
-*GZipped*: 593 bytes
-*Minified*: 977 bytes
-*Single line*: 816 bytes
+*GZipped*: 631 bytes
+*Minified*: 1079 bytes
 *Compatibility*: Tested in Safari, Chrome, Firefox, IE6+, basically doing nothing too fancy.
 *Examples*: "http://berklee.github.com/nbl/example.html":http://berklee.github.com/nbl/example.html
 
@@ -19,17 +18,22 @@ h3. Features
 
 * Load scripts asynchronously or in order, or any combination of both
 * Every script can have its own callback
-* Trigger a callback on a user definable timeout period
+* A callback for loading all items
+* Can be mixed with your provided function for loading some data
+* [TODO: Trigger a callback on a user definable timeout period]
 * Uses HTML5's data attribute for configuration, so load all scripts with one script-tag
-* Also available as a single line for inclusion in your HTML page
-* Less than 1kb!
+* Very small code!
 
 h2. Usage
 
 Include NBL.js in your pages and let it dynamically load all your JavaScript files by simply including 
 the following tag:
 
-@<script src="nbl.js" data-nbl="[ [ 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', 'jquery.lightbox.min.js', 'jquery.carousel.min.js' ], function(e){ jquery_loaded(e) }, 'http://www.google-analytics.com/urchin.js', function(){ urchin_loaded() } ]"></script>@
+@<script src="nbl.js" data-nbl="[ { load: 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js',
+                                    then: ['jquery.lightbox.min.js', 'jquery.carousel.min.js' ],
+                                    callback:function(e){ jquery_loaded(e) }
+                                  },
+                                  'http://www.google-analytics.com/urchin.js' ]"></script>@
 
 This will do the following:
 
@@ -38,17 +42,6 @@ This will do the following:
 * After jQuery has loaded, it will start loading the jQuery plugins as defined after jQuery in parallel.
 * When jQuery has loaded, it will call the @jquery_loaded()@ function.
 * Finally, when Urchin has loaded, it will call the @urchin_loaded()@ function.
-
-h3. Verifying the results
-
-After NBL.js has done its job you can verify a few things through the global @nbl@ object. Every script will be placed in the @nbl.q@ object, referred to by the filename of the script minus the ".js" or .min.js" extension or any non-word characters.
-
-In the above example "jquery.lightbox.min.js" will become "jquerylightbox". If it has loaded successfully, @nbl.q.jquerylightbox@ will return true, otherwise you'll get the script element of the script you queried.
-
-When a script fails to load, NBL will fire the first defined function it encounters after a default timeout of 2500ms. In the above example that function is @jquery_loaded()@. If jQuery loads fine, but one of the plugins doesn't, the timeout will expire and call @jquery_loaded()@ once again, only this time it will provide the @nbl.q@ object as its only argument @e@.
-
-That way you can distinguish between a normal call and a timed out call, check out the example for more 
-information on this feature.
 
 h2. Options
 
@@ -62,55 +55,35 @@ This will simply load all three scripts in parallel.
 
 h3. Loading two scripts asynchronously, and two plugins asynchronously after the first script:
 
-@[ [ 'script1.js', 'plugin1.js', 'plugin2.js' ], 'script2.js' ]@
+@[ {load:'script1.js', then:['plugin1.js', 'plugin2.js' ]}, 'script2.js' ]@
 
 This will load @script1.js@ and @script2.js@ in parallel. After @script1.js@ has loaded, @plugin1.js@ and 
 @plugin2.js@ will load in parallel.
 
-When NBL.js encounters an array of scripts, it will immediately load the first script (@script1.js@ in 
-this case) and load the remaining scripts (@plugin1.js@ and @plugin2.js@) after completion. The 
-@plugin1.js@ and @plugin2.js@ scripts have a lower priority than the @script1.js@ and @script2.js@ 
-scripts and will be loaded after @script1.js@ completes.
-
 h3. Loading four scripts in order:
 
-@[ [ 'script1.js', [ 'script2.js', [ 'script3.js, 'script4.js ] ] ] ]@
+@{ load:'script1.js', then:{load:'script2.js', then:{load:'script3.js, then:'script4.js } } }@
 
-It's a bit crazy, but nesting the arrays like this will allow you to load all scripts sequentially. After 
-the first array with @script1.js@, NBL.js encounters a second array starting with @script2.js@, which it 
-will load after @script1.js@ has completed.
-
-After @script2.js@ completes, NBL.js will continue the iteration with the third array that starts with 
-@script3.js@, finally ending with loading @script4.js@ after @script3.js@ has completed.
+It's a bit crazy, but nesting the objects like this will allow you to load all scripts sequentially. 
 
 h3. Three scripts with their own callbacks:
 
-@[ 'script1.js', function(e){ script1_callback(e) }, 'script2.js', function(){ script2_callback() }, 'script3.js', function(){ script3_callback() } ]@
-
-The basic rule of callbacks is: declare the callback function directly after the script.
-
-In this example, the three scripts will load in parallel and upon completion of each script, the 
-corresponding callback will be called. In case of a timeout, the first defined function 
-(@script1_callback(e)@) will be called with @nbl.q@ as argument @e@ (as explained above).
+```@[ {load:'script1.js', callback:function(e){ script1_callback(e) }},
+   {load:'script2.js', callback:function(){ script2_callback() }},
+   {load:'script3.js', callback:function(){ script3_callback() }} ]@```
 
 h3. Two scripts and a plugin with their own callbacks:
 
-@[ [ 'script1.js', 'plugin1.js', function(){ plugin1_callback() } ], function(e){ script1_callback(e) }, 'script2.js', function(){ script2_callback() } ]@
+```@[ { load:'script1.js',
+     then: {load:'plugin1.js', callback:function(){ plugin1_callback() } },
+     callback: function(e){ script1_callback(e) }
+   },
+   {load:'script2.js', callback:function(){ script2_callback() }} ]@```
 
-Following the basic rule of callbacks as mentioned above, we place the callback function for @script1.js@ 
-*outside* the array that contains @script1.js@ and @plugin1.js@, since to NBL.js @script1.js@ and 
-@script2.js@ are on equal footing, the callbacks for both must be placed in the main array.
+h3. [TODO:] Defining a global timeout function and a new timeout:
 
-h3. Defining a global timeout function and a new timeout:
+@{ load: ['script1.js', 'script2.js', 'script3.js' ], timeout: function(){global_timeout()} }{@
 
-@[ 3200, function(e){ global_timeout(e) }, 'script1.js', function(){ script1_callback() }, 'script2.js', function(){ script2_callback() } ]@
-
-First off, by specifying a number anywhere in the options, NBL.js will assume you want to change the timeout 
-from the default 2500ms to the provided number. Second, by putting a function before any scripts, it will 
-define it as the global timeout function.
-
-In this case @script1_callback()@ and @script2_callback()@ will be called when @script1.js@ and @script2.js@ 
-are finished loading. And in case of an error, @global_timeout()@ will be called after approximately 3500ms.
 
 h2. Alternative usage
 

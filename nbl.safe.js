@@ -52,19 +52,6 @@
 				);
 			}*/
 
-			// If no arguments were given (a == l, which is null), try to load the options from the script tag
-			if (!params) {
-				var j=0, scripts = document.getElementsByTagName("script"); // Get all script tags in the current document
-				while (j < scripts.length) {
-					/*jslint evil:true */
-					params = eval("("+scripts[j].getAttribute("data-nbl")+")");
-					if (params) { // Check for the data-nbl attribute
-						head = scripts[j].parentNode;
-						break;
-					}
-					j++;
-				}
-			}
 			if (params) {
 				loadItems(params, callback||noop);
 			}
